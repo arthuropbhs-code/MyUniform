@@ -1,0 +1,21 @@
+# MyUniform
+
+**MyUniform** is a web-based JROTC Class B Uniform Builder. Cadets can customize ribbons, medals, and arcs to see a live preview of their uniform.
+
+![Preview](img/myuniform-preview.png) <!-- optional screenshot -->
+
+## Features
+- Interactive uniform mannequin
+- Add ribbons, medals, and arcs
+- Reset and customize freely
+- Mobile-friendly and responsive
+
+## How to Use
+1. Open the site: [MyUniform Live](https://yourusername.github.io/your-repo-name/)
+2. Select your school 
+3. Click ribbons, medals, or arcs to customize your uniform
+4. See your changes live on the mannequin
+
+## File Structure
+
+## Current Version Only Works for Pompano Beach High School
