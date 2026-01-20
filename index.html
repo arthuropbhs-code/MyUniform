@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyUniform | Broward County</title>
+    <title>MyUniform | Pompano Beach</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
 
-        /* Updated to 3.5:1 aspect ratio based on 105x30px dimensions */
+        /* Scaled to match the 3.5:1 ratio of 105x30px assets */
         .ribbon-mini {
             width: 35px; 
             height: 10px;
@@ -17,88 +17,60 @@
             background-repeat: no-repeat;
             background-position: center;
             border: 0.5px solid rgba(0,0,0,0.8);
-            box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
             position: relative;
             animation: pop 0.2s ease-out;
         }
 
-        @keyframes subtle-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .animate-float { animation: subtle-float 4s ease-in-out infinite; }
 
-        .school-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .school-card:hover { transform: translateY(-10px); background-color: rgba(255, 255, 255, 0.15); border-color: #6366f1; }
+        .mini-star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 7px;
+            color: #ffd700;
+            text-shadow: 0.5px 0.5px black;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+            letter-spacing: -1px;
+        }
 
         .mannequin-container { position: relative; width: 440px; height: 540px; display: flex; justify-content: center; }
         .shirt-body { position: absolute; top: 40px; width: 260px; height: 460px; background-color: #ffffff; border-radius: 4px; border: 2px solid #cbd5e1; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 10; }
-        .sleeve { position: absolute; top: 45px; width: 85px; height: 210px; background-color: #ffffff; border: 2px solid #cbd5e1; z-index: 5; }
-        .sleeve-left { left: 20px; transform: rotate(10deg); border-radius: 20px 0 0 10px; }
-        .sleeve-right { right: 20px; transform: rotate(-10deg); border-radius: 0 20px 10px 0; }
-        .collar-left, .collar-right { position: absolute; top: 0; width: 0; height: 0; border-style: solid; z-index: 25; }
-        .collar-left { left: 55px; border-width: 50px 75px 0 0; border-color: #f1f5f9 transparent transparent transparent; }
-        .collar-right { right: 55px; border-width: 50px 0 0 75px; border-color: #f1f5f9 transparent transparent transparent; }
-        
         .pocket { position: absolute; width: 90px; height: 100px; background-color: #ffffff; border: 1px solid #e2e8f0; z-index: 12; }
-        .pocket-flap { position: absolute; top: -5px; width: 100%; height: 26px; background-color: #ffffff; border: 1px solid #e2e8f0; clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%); z-index: 13; }
         .pocket-left { top: 150px; right: 30px; } 
-        .pocket-right { top: 150px; left: 30px; }
-        
         .ribbon-rack-container { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 8px; display: flex; flex-direction: column-reverse; gap: 1.5px; align-items: center; }
-        .mini-star { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 7px; color: #ffd700; text-shadow: 0.5px 0.5px black; letter-spacing: -1px; width: 100%; text-align: center; }
-        
-        .medal-rack-container { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; z-index: 14; justify-content: center; width: 80px; }
-        .medal-mini { width: 14px; height: 24px; display: flex; flex-direction: column; align-items: center; animation: pop 0.2s ease-out; }
-        .medal-ribbon-part { width: 12px; height: 12px; border: 0.1px solid #000; }
-        .medal-coin-part { width: 12px; height: 12px; background: #ffd700; border-radius: 50%; border: 0.5px solid #996515; margin-top: -2px; }
-
-        .arc-container { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; width: 90px; gap: 0px; z-index: 15; }
-        .arc-mini { width: 85px; height: 25px; background-size: contain; background-repeat: no-repeat; background-position: center; margin-bottom: -16px; animation: pop 0.2s ease-out; }
-
-        #selection-list::-webkit-scrollbar { width: 6px; }
-        #selection-list::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div id="landing-page" class="fixed inset-0 z-50 bg-[#0f172a] flex flex-col items-center justify-center p-6 text-white">
-        <h1 class="text-5xl md:text-7xl font-black text-center mb-12">Broward County<br><span class="text-indigo-500 italic">MyUniform</span></h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
-            <div onclick="enterApp('Pompano Beach HS', 'Tornado Battalion')" class="school-card p-8 bg-white/5 rounded-[2.5rem]">
-                <h3 class="font-bold text-2xl">Pompano Beach</h3>
-                <p class="text-indigo-400 text-[11px] font-black uppercase tracking-widest">Tornado Battalion</p>
-            </div>
-            <div onclick="enterApp('Fort Lauderdale HS', 'Flying L Battalion')" class="school-card p-8 bg-white/5 rounded-[2.5rem]">
-                <h3 class="font-bold text-2xl">Fort Lauderdale</h3>
-                <p class="text-slate-400 text-[11px] font-black uppercase tracking-widest">Flying L Battalion</p>
-            </div>
+        <h1 class="text-5xl font-black text-center mb-12">Broward County<br><span class="text-indigo-500 italic">MyUniform</span></h1>
+        <div onclick="enterApp('Pompano Beach HS', 'Tornado Battalion')" class="p-8 bg-white/5 rounded-[2.5rem] border border-indigo-500/30 hover:bg-white/10 cursor-pointer transition-all w-full max-w-sm text-center">
+            <h3 class="font-bold text-2xl">Pompano Beach</h3>
+            <p class="text-indigo-400 text-[11px] font-black uppercase tracking-widest mt-2">Tornado Battalion</p>
         </div>
     </div>
 
     <div id="builder-content" class="hidden min-h-screen">
         <header class="p-6 flex items-center justify-between sticky top-0 bg-slate-50/80 backdrop-blur-xl z-40 border-b">
-            <button onclick="exitApp()" class="bg-white p-2.5 rounded-xl border border-slate-200">EXIT</button>
+            <button onclick="exitApp()" class="bg-white p-2.5 rounded-xl border border-slate-200 font-bold text-xs uppercase">Exit</button>
             <div class="text-center">
-                <h2 id="header-school-name" class="text-xl font-black">School</h2>
-                <p id="header-unit-name" class="text-indigo-600 font-black text-[10px] uppercase">Unit</p>
+                <h2 class="text-xl font-black">Pompano Beach HS</h2>
+                <p class="text-indigo-600 font-black text-[10px] uppercase tracking-widest">Tornado Battalion</p>
             </div>
             <button onclick="resetAll()" class="text-red-500 font-bold text-xs">RESET</button>
         </header>
 
         <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div class="flex flex-col items-center">
-                <div class="bg-[#0f172a] w-full rounded-[4rem] p-4 py-12 shadow-2xl relative flex items-center justify-center overflow-hidden">
-                    <div class="mannequin-container animate-float">
-                        <div class="sleeve sleeve-left"></div><div class="sleeve sleeve-right"></div>
+                <div class="bg-[#0f172a] w-full rounded-[4rem] p-4 py-12 shadow-2xl flex items-center justify-center">
+                    <div class="mannequin-container">
                         <div class="shirt-body">
-                            <div class="collar-left"></div><div class="collar-right"></div>
                             <div class="pocket pocket-left">
-                                <div class="pocket-flap"></div>
                                 <div id="u-ribbons" class="ribbon-rack-container"></div>
-                                <div id="u-medals" class="medal-rack-container"></div>
-                            </div>
-                            <div class="pocket pocket-right">
-                                <div class="pocket-flap"></div>
-                                <div id="u-arcs" class="arc-container"></div>
                             </div>
                         </div>
                     </div>
@@ -107,14 +79,13 @@
 
             <div class="bg-white rounded-[3rem] p-8 shadow-xl border h-[700px] flex flex-col">
                 <div class="flex p-1.5 bg-slate-100 rounded-[1.8rem] mb-6">
-                    <button onclick="setTab('ribbons')" id="btn-ribbons" class="flex-1 py-3 rounded-[1.5rem] font-bold text-sm bg-white text-indigo-600 shadow-sm">Ribbons</button>
-                    <button onclick="setTab('medals')" id="btn-medals" class="flex-1 py-3 rounded-[1.5rem] font-bold text-sm text-slate-500">Medals</button>
-                    <button onclick="setTab('arcs')" id="btn-arcs" class="flex-1 py-3 rounded-[1.5rem] font-bold text-sm text-slate-500">Arcs</button>
+                    <button class="flex-1 py-3 rounded-[1.5rem] font-bold text-sm bg-white text-indigo-600 shadow-sm">Ribbons</button>
+                    <button class="flex-1 py-3 rounded-[1.5rem] font-bold text-sm text-slate-300 cursor-not-allowed">Medals (Soon)</button>
+                    <button class="flex-1 py-3 rounded-[1.5rem] font-bold text-sm text-slate-300 cursor-not-allowed">Arcs (Soon)</button>
                 </div>
-                <div class="px-2 mb-4">
-                    <input type="text" id="ribbonSearch" onkeyup="renderSelections()" placeholder="Search ribbons, medals, or arcs..." 
-                    class="w-full p-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
-                </div>
+                
+                <input type="text" id="ribbonSearch" onkeyup="renderSelections()" placeholder="Search ribbons..." class="w-full p-4 mb-4 rounded-2xl border border-slate-200 bg-slate-50 text-sm outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                
                 <div id="selection-list" class="space-y-3 overflow-y-auto pr-2 flex-1"></div>
             </div>
         </div>
@@ -179,30 +150,9 @@
             { id: 'p13', name: 'Company Req Completion Ribbon', precedence: 212, img: 'assets/Company_Req_Completion_Ribbon.png' }
         ];
 
-        const MEDALS = [
-            { id: 'm1', name: 'JPA Medal', color: '#8b0000' },
-            { id: 'm2', name: '100 Flag Medal', color: '#ffd700' },
-            { id: 'm3', name: 'Superior Cadet', color: '#006400' }
-        ];
+        let state = { ribbons: new Map() };
 
-        const ARCS = [
-            { id: 'a1', name: 'Cadet Challenge', img: 'assets/Cadet_Challenge.png' },
-            { id: 'a2', name: 'Color Guard', img: 'assets/Color_Guard_Arc.png' },
-            { id: 'a3', name: 'Drill Team', img: 'assets/Drill_Arc.png' },
-            { id: 'a4', name: 'Flag Detail', img: 'assets/Flag_Detail_Arc.png' },
-            { id: 'a5', name: 'Fundraising', img: 'assets/Fundraising_Arc.png' },
-            { id: 'a6', name: 'JCLC', img: 'assets/JCLC_Arc.png' },
-            { id: 'a7', name: 'Raider', img: 'assets/Raider_Arc.png' },
-            { id: 'a8', name: 'Saber Team', img: 'assets/Saber_Team_Arc.png' },
-            { id: 'a9', name: 'Staff', img: 'assets/Staff_Arc.png' }
-        ].sort((a,b) => a.name.localeCompare(b.name));
-
-        let state = { ribbons: new Map(), medals: new Set(), arcs: new Set(), tab: 'ribbons', school: '' };
-
-        function enterApp(s, u) {
-            state.school = s;
-            document.getElementById('header-school-name').innerText = s;
-            document.getElementById('header-unit-name').innerText = u;
+        function enterApp() {
             document.getElementById('landing-page').classList.add('hidden');
             document.getElementById('builder-content').classList.remove('hidden');
             renderSelections();
@@ -210,47 +160,27 @@
 
         function exitApp() { location.reload(); }
 
-        function setTab(t) {
-            state.tab = t;
-            ['ribbons', 'medals', 'arcs'].forEach(tab => {
-                const btn = document.getElementById(`btn-${tab}`);
-                btn.className = tab === t ? "flex-1 py-3 rounded-[1.5rem] font-bold text-sm bg-white text-indigo-600 shadow-sm" : "flex-1 py-3 rounded-[1.5rem] font-bold text-sm text-slate-500";
-            });
-            renderSelections();
-        }
-
         function updateRibbon(id, d) {
             let c = (state.ribbons.get(id) || 0) + d;
-            // Cap at 5 (1 original + 4 stars max)
-            if (c <= 0) state.ribbons.delete(id); else state.ribbons.set(id, Math.min(c, 5)); 
-            updatePreview(); renderSelections();
-        }
-
-        function toggleItem(type, id) {
-            if (state[type].has(id)) state[type].delete(id); else state[type].add(id);
+            if (c <= 0) state.ribbons.delete(id); 
+            else state.ribbons.set(id, Math.min(c, 5)); // 1 + 4 stars max
             updatePreview(); renderSelections();
         }
 
         function renderSelections() {
             const list = document.getElementById('selection-list');
-            const searchTerm = document.getElementById('ribbonSearch') ? document.getElementById('ribbonSearch').value.toLowerCase() : '';
+            const search = document.getElementById('ribbonSearch').value.toLowerCase();
             list.innerHTML = '';
             
-            if (state.tab === 'ribbons') {
-                // School-Specific Logic: Everyone gets Official, only Pompano gets Pompano ribbons
-                let available = [...OFFICIAL_RIBBONS];
-                if (state.school === 'Pompano Beach HS') {
-                    available = [...available, ...POMPANO_RIBBONS];
-                }
-                
-                const filtered = available.filter(r => r.name.toLowerCase().includes(searchTerm));
-                
-                filtered.forEach(r => {
-                    const count = state.ribbons.get(r.id) || 0;
-                    const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-4 rounded-3xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50/40' : 'bg-white border-slate-100'}`;
-                    div.innerHTML = `<div class="flex items-center gap-4">
-                        <div class="w-14 h-4 bg-slate-100 rounded overflow-hidden flex items-center justify-center border border-slate-200">
+            const available = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS];
+
+            available.filter(r => r.name.toLowerCase().includes(search)).forEach(r => {
+                const count = state.ribbons.get(r.id) || 0;
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between p-4 rounded-2xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                         <div class="w-14 h-4 bg-slate-100 rounded overflow-hidden flex items-center justify-center border border-slate-200">
                             <img src="${r.img}" class="w-full h-full object-fill" onerror="this.style.opacity='0'">
                         </div>
                         <span class="text-[11px] font-bold text-slate-700">${r.name}</span>
@@ -260,90 +190,51 @@
                         <span class="w-6 text-center text-xs font-black text-indigo-600">${count}</span>
                         <button onclick="updateRibbon('${r.id}', 1)" class="w-7 h-7 text-indigo-600 font-bold">+</button>
                     </div>`;
-                    list.appendChild(div);
-                });
-            } else if (state.tab === 'medals') {
-                const filtered = MEDALS.filter(m => m.name.toLowerCase().includes(searchTerm));
-                filtered.forEach(m => {
-                    const active = state.medals.has(m.id);
-                    const div = document.createElement('div');
-                    div.className = `p-4 rounded-3xl border cursor-pointer transition-all ${active ? 'border-indigo-500 bg-indigo-50/40' : 'bg-white border-slate-100'}`;
-                    div.onclick = () => toggleItem('medals', m.id);
-                    div.innerHTML = `<div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-700">${m.name}</span><span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span></div>`;
-                    list.appendChild(div);
-                });
-            } else {
-                const filtered = ARCS.filter(a => a.name.toLowerCase().includes(searchTerm));
-                filtered.forEach(a => {
-                    const active = state.arcs.has(a.id);
-                    const div = document.createElement('div');
-                    div.className = `p-4 rounded-3xl border cursor-pointer transition-all ${active ? 'border-indigo-500 bg-indigo-50/40' : 'bg-white border-slate-100'}`;
-                    div.onclick = () => toggleItem('arcs', a.id);
-                    div.innerHTML = `<div class="flex items-center justify-between"><div class="flex items-center gap-4"><img src="${a.img}" class="h-6 w-12 object-contain"> <span class="text-xs font-bold text-slate-700">${a.name}</span></div><span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span></div>`;
-                    list.appendChild(div);
-                });
-            }
+                list.appendChild(div);
+            });
         }
 
         function updatePreview() {
-            const rPreview = document.getElementById('u-ribbons'); rPreview.innerHTML = '';
+            const container = document.getElementById('u-ribbons');
+            container.innerHTML = '';
             
-            // Re-merge arrays for preview check
-            const allR = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS];
-            const activeR = allR.filter(r => state.ribbons.has(r.id)).sort((a,b) => a.precedence - b.precedence);
-            
-            if (activeR.length > 0) {
-                const rows = [];
-                let temp = [...activeR];
-                const topSize = temp.length % 3 || 3;
-                rows.push(temp.splice(0, topSize));
-                while(temp.length > 0) rows.push(temp.splice(0, 3));
-                
-                rows.reverse().forEach(rowItems => {
-                    const rowDiv = document.createElement('div'); rowDiv.className = 'flex gap-[1px] justify-center';
-                    rowItems.forEach(r => {
-                        const div = document.createElement('div'); 
-                        div.className = 'ribbon-mini'; 
-                        div.style.backgroundImage = `url(${r.img})`;
-                        
-                        const count = state.ribbons.get(r.id);
-                        if(count > 1) {
-                            const star = document.createElement('div'); 
-                            star.className = 'mini-star'; 
-                            // Star Logic: max 4 stars (repeat count-1)
-                            star.innerText = '★'.repeat(count - 1);
-                            div.appendChild(star);
-                        }
-                        rowDiv.appendChild(div);
-                    });
-                    rPreview.appendChild(rowDiv);
+            const active = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
+                .filter(r => state.ribbons.has(r.id))
+                .sort((a,b) => a.precedence - b.precedence);
+
+            if(active.length === 0) return;
+
+            let temp = [...active];
+            const rows = [];
+            const topRowSize = temp.length % 3 || 3;
+            rows.push(temp.splice(0, topRowSize));
+            while(temp.length > 0) rows.push(temp.splice(0,3));
+
+            rows.reverse().forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = "flex gap-[1.5px]";
+                row.forEach(r => {
+                    const d = document.createElement('div');
+                    d.className = 'ribbon-mini';
+                    d.style.backgroundImage = `url(${r.img})`;
+                    const c = state.ribbons.get(r.id);
+                    if(c > 1) {
+                        const s = document.createElement('div');
+                        s.className = 'mini-star';
+                        s.innerText = '★'.repeat(c-1);
+                        d.appendChild(s);
+                    }
+                    rowDiv.appendChild(d);
                 });
-            }
-
-            const mPreview = document.getElementById('u-medals'); mPreview.innerHTML = '';
-            state.medals.forEach(id => {
-                const medal = MEDALS.find(m => m.id === id);
-                const div = document.createElement('div'); div.className = 'medal-mini';
-                div.innerHTML = `<div class="medal-ribbon-part" style="background:${medal.color}"></div><div class="medal-coin-part"></div>`;
-                mPreview.appendChild(div);
-            });
-
-            const aPreview = document.getElementById('u-arcs'); aPreview.innerHTML = '';
-            state.arcs.forEach(id => {
-                const arc = ARCS.find(a => a.id === id);
-                const div = document.createElement('div'); div.className = 'arc-mini';
-                div.style.backgroundImage = `url(${arc.img})`;
-                aPreview.appendChild(div);
+                container.appendChild(rowDiv);
             });
         }
 
-        function resetAll() { 
-            state.ribbons.clear(); 
-            state.medals.clear(); 
-            state.arcs.clear(); 
+        function resetAll() {
+            state.ribbons.clear();
             if(document.getElementById('ribbonSearch')) document.getElementById('ribbonSearch').value = '';
-            updatePreview(); 
-            renderSelections(); 
+            updatePreview();
+            renderSelections();
         }
     </script>
 </body>
