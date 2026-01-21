@@ -9,6 +9,26 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
 
+        /* This only triggers on screens smaller than 768px (Mobile/Tablets) */
+@media (max-width: 768px) {
+    .mannequin-container {
+        width: 320px; /* Smaller container for mobile */
+        height: 450px;
+    }
+
+    .ribbon-rack-container {
+        /* Adjust these numbers specifically for the mobile view */
+        top: 145px; 
+        left: 63%;
+        transform: translateX(-50%) scale(0.8); /* Scales ribbons down slightly for smaller screens */
+    }
+
+    .ribbon-mini {
+        width: 30px; /* Slightly smaller ribbons so they don't look huge on a small phone */
+        height: 9px;
+    }
+}
+
         .mannequin-container { 
             position: relative; 
             width: 480px; 
