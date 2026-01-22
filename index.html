@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MyUniform | Pompano Beach</title>
+    <title>MyUniform | Broward County JROTC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Public+Sans:wght@300;400;700;900&display=swap');
         
         :root {
-            --primary: #6366f1;
+            /* Broward District Blue & Army Gold Palette */
+            --broward-blue: #2563eb; 
             --army-gold: #c5a059;
-            --military-slate: #1a1f2e;
+            --military-slate: #0f172a;
         }
 
         body { 
             font-family: 'Public Sans', sans-serif; 
-            background-color: #f1f5f9; 
+            background-color: #f8fafc; 
             overflow-x: hidden; 
             scroll-behavior: smooth;
             -webkit-tap-highlight-color: transparent;
@@ -24,7 +25,7 @@
 
         /* TACTICAL GRADIENT BACKGROUND */
         .military-bg {
-            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+            background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #0f172a 100%);
             position: relative;
         }
 
@@ -33,7 +34,6 @@
             position: absolute;
             inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            /* ADD THIS LINE BELOW TO FIX THE BUTTON */
             pointer-events: none;
         }
 
@@ -164,14 +164,14 @@
         <!-- NAV BAR -->
         <nav class="w-full max-w-5xl flex items-center justify-between py-4 fade-in-up">
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center font-black text-xs">M</div>
-                <span class="font-black tracking-tight text-sm">MyUniform</span>
+                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-black text-xs shadow-lg shadow-blue-500/20">B</div>
+                <span class="font-black tracking-tight text-sm">BCPS <span class="text-blue-400">JROTC</span></span>
             </div>
             <div class="hidden md:flex items-center gap-2">
-                <a href="#" class="nav-link">Battalion</a>
-                <a href="#" class="nav-link">Resources</a>
+                <a href="#" class="nav-link">Battalions</a>
+                <a href="#" class="nav-link">CCR 145-2</a>
                 <a href="#" class="nav-link">Cadet Portal</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="#" class="nav-link">Support</a>
             </div>
             <div class="w-8 md:hidden"></div>
         </nav>
@@ -180,21 +180,22 @@
         <div class="flex flex-col items-center text-center max-w-xl">
             <div class="fade-in-up" style="animation-delay: 0.1s">
                 <h1 class="text-6xl font-black tracking-tighter mb-4">
-                    Broward <span class="text-indigo-400">JROTC</span>
+                    Broward <span class="text-blue-400">Uniform</span>
                 </h1>
-                <p class="text-indigo-200/50 uppercase tracking-[0.4em] font-bold text-[10px] mb-12">Uniform Builder</p>
+                <p class="text-blue-200/50 uppercase tracking-[0.4em] font-bold text-[10px] mb-12 italic">Professional Inspection Preparation</p>
             </div>
             
-            <div onclick="enterApp()" class="btn-tap fade-in-up group relative p-6 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 hover:border-indigo-500/50 hover:bg-white/10 cursor-pointer transition-all w-full max-w-xs text-center" style="animation-delay: 0.2s">
-                <h3 class="font-bold text-lg relative">Pompano Beach</h3>
-                <p class="text-indigo-400 text-[10px] font-black uppercase tracking-widest mt-1 relative">Enter Battalion</p>
+            <div onclick="enterApp()" class="btn-tap fade-in-up group relative p-6 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 hover:border-blue-500/50 hover:bg-white/10 cursor-pointer transition-all w-full max-w-xs text-center shadow-2xl" style="animation-delay: 0.2s">
+                <h3 class="font-bold text-lg relative">Pompano Beach HS</h3>
+                <p class="text-blue-400 text-[10px] font-black uppercase tracking-widest mt-1 relative">Enter Battalion Builder</p>
+                <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</div>
             </div>
         </div>
 
         <!-- FOOTER / DISCLAIMER -->
         <footer class="w-full max-w-3xl text-center pb-8 opacity-40 fade-in-up" style="animation-delay: 0.4s">
             <div class="h-px bg-white/20 w-16 mx-auto mb-6"></div>
-            <p class="text-[10px] uppercase tracking-widest font-bold mb-2">© 2024 MyUniform Pro. All Rights Reserved.</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold mb-2">© 2024 MyUniform Pro | Broward County Public Schools</p>
             <p class="text-[9px] leading-relaxed">This tool is for visual representation only. Always refer to official JROTC CCR 145-2 regulations for final ribbon placement and inspection standards. Not affiliated with the Department of the Army.</p>
         </footer>
     </div>
@@ -202,12 +203,12 @@
     <!-- MAIN APP CONTENT -->
     <div id="builder-content" class="hidden opacity-0 transition-all duration-700 min-h-screen pb-12">
         <header class="p-4 px-6 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-xl z-40 border-b border-slate-200">
-            <button onclick="exitApp()" class="btn-tap bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl font-bold text-[11px] uppercase tracking-tight transition-all">Exit Builder</button>
+            <button onclick="exitApp()" class="btn-tap bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl font-bold text-[11px] uppercase tracking-tight transition-all">Back to District</button>
             <div class="text-center">
                 <h2 class="text-sm font-black leading-tight">Pompano Beach HS</h2>
-                <p class="text-indigo-600 font-black text-[9px] uppercase tracking-widest">Tornado Battalion</p>
+                <p class="text-blue-600 font-black text-[9px] uppercase tracking-widest">Tornado Battalion</p>
             </div>
-            <button onclick="resetAll()" class="btn-tap px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all text-right">Reset</button>
+            <button onclick="resetAll()" class="btn-tap px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all text-right">Reset Rack</button>
         </header>
 
         <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -215,10 +216,14 @@
             <div class="flex flex-col items-center lg:sticky lg:top-24">
                 <div class="bg-slate-900 w-full rounded-[3rem] p-6 shadow-2xl flex items-center justify-center overflow-hidden border-[6px] border-slate-800 relative">
                     <div class="mannequin-container" id="mannequin">
-                        <img src="assets/Male_Class_A.png" class="mannequin-img" alt="Uniform" onerror="this.src='https://placehold.co/480x620/0f172a/6366f1?text=Class+A+Uniform'">
+                        <img src="assets/Male_Class_A.png" class="mannequin-img" alt="Uniform" onerror="this.src='https://placehold.co/480x620/0f172a/3b82f6?text=Class+A+Uniform'">
                         <div id="u-ribbons" class="ribbon-rack-container"></div>
                         <div id="u-medals" class="medals-container"></div>
                         <div id="u-arcs" class="arcs-container"></div>
+                    </div>
+                    <!-- District Overlay -->
+                    <div class="absolute top-6 left-6 opacity-20 pointer-events-none">
+                        <div class="text-[10px] font-black text-white uppercase tracking-tighter">BCPS JROTC</div>
                     </div>
                 </div>
             </div>
@@ -226,13 +231,13 @@
             <!-- RIGHT: CONTROLS -->
             <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-slate-100 h-[700px] flex flex-col">
                 <div class="flex p-1.5 bg-slate-100/80 rounded-2xl mb-6">
-                    <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-indigo-600 shadow-sm transition-all">Ribbons</button>
+                    <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-blue-600 shadow-sm transition-all">Ribbons</button>
                     <button id="btn-medals" onclick="setTab('medals')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Medals</button>
                     <button id="btn-arcs" onclick="setTab('arcs')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Arcs</button>
                 </div>
                 
                 <div class="relative mb-4">
-                    <input type="text" id="globalSearch" onkeyup="renderSelections()" placeholder="Search awards..." class="w-full p-3 pl-5 rounded-xl border border-slate-200 bg-slate-50 text-xs outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
+                    <input type="text" id="globalSearch" onkeyup="renderSelections()" placeholder="Search awards..." class="w-full p-3 pl-5 rounded-xl border border-slate-200 bg-slate-50 text-xs outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all">
                 </div>
                 
                 <div id="selection-list" class="space-y-2 overflow-y-auto pr-2 flex-1 scroll-smooth"></div>
@@ -339,20 +344,15 @@
             const lp = document.getElementById('landing-page');
             const bc = document.getElementById('builder-content');
             
-            // Start fading out landing page
             lp.style.opacity = '0';
             lp.style.pointerEvents = 'none';
             
             setTimeout(() => {
                 lp.classList.add('hidden');
                 bc.classList.remove('hidden');
-                
-                // Force layout recalculation
                 void bc.offsetWidth;
-                
                 bc.classList.remove('opacity-0');
                 bc.classList.add('opacity-100');
-                
                 renderSelections();
                 updatePreview();
             }, 600);
@@ -370,7 +370,7 @@
             ['ribbons', 'medals', 'arcs'].forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
                 btn.className = (t === tab) 
-                    ? "flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-indigo-600 shadow-sm"
+                    ? "flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-blue-600 shadow-sm"
                     : "flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400";
             });
             renderSelections();
@@ -401,7 +401,7 @@
                 available.forEach((r, i) => {
                     const count = state.ribbons.get(r.id) || 0;
                     const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
+                    div.className = `flex items-center justify-between p-3 rounded-xl border transition-all ${count > 0 ? 'border-blue-500 bg-blue-50' : 'bg-white border-slate-100'}`;
                     div.innerHTML = `
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-3 border border-slate-200 bg-white">
@@ -411,8 +411,8 @@
                         </div>
                         <div class="flex items-center bg-white rounded-lg border border-slate-200 p-1">
                             <button onclick="updateRibbon('${r.id}', -1)" class="w-6 h-6 text-xs font-bold text-slate-400">-</button>
-                            <span class="w-4 text-center text-[10px] font-black text-indigo-600">${count}</span>
-                            <button onclick="updateRibbon('${r.id}', 1)" class="w-6 h-6 text-xs text-indigo-600 font-bold">+</button>
+                            <span class="w-4 text-center text-[10px] font-black text-blue-600">${count}</span>
+                            <button onclick="updateRibbon('${r.id}', 1)" class="w-6 h-6 text-xs text-blue-600 font-bold">+</button>
                         </div>`;
                     list.appendChild(div);
                 });
@@ -420,18 +420,18 @@
                 MEDALS.filter(m => m.name.toLowerCase().includes(search)).forEach(m => {
                     const active = state.medals.has(m.id);
                     const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-indigo-500 bg-indigo-50' : 'bg-white'}`;
+                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-blue-500 bg-blue-50' : 'bg-white'}`;
                     div.onclick = () => toggleItem('medals', m.id);
-                    div.innerHTML = `<span class="text-[10px] font-bold">${m.name}</span><span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span>`;
+                    div.innerHTML = `<span class="text-[10px] font-bold">${m.name}</span><span class="text-blue-600 font-black">${active ? '✓' : '+'}</span>`;
                     list.appendChild(div);
                 });
             } else {
                 ARCS.filter(a => a.name.toLowerCase().includes(search)).forEach(a => {
                     const active = state.arcs.has(a.id);
                     const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-indigo-500 bg-indigo-50' : 'bg-white'}`;
+                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-blue-500 bg-blue-50' : 'bg-white'}`;
                     div.onclick = () => toggleItem('arcs', a.id);
-                    div.innerHTML = `<span class="text-[10px] font-bold">${a.name} Arc</span><span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span>`;
+                    div.innerHTML = `<span class="text-[10px] font-bold">${a.name} Arc</span><span class="text-blue-600 font-black">${active ? '✓' : '+'}</span>`;
                     list.appendChild(div);
                 });
             }
