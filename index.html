@@ -6,36 +6,49 @@
     <title>MyUniform | Pompano Beach</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Public+Sans:wght@300;400;700;900&display=swap');
         
         :root {
             --primary: #6366f1;
-            --primary-dark: #4f46e5;
+            --army-gold: #c5a059;
+            --military-slate: #1a1f2e;
         }
 
         body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f8fafc; 
+            font-family: 'Public Sans', sans-serif; 
+            background-color: #f1f5f9; 
             overflow-x: hidden; 
             scroll-behavior: smooth;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ANIMATED MESH BACKGROUND */
-        .mesh-bg {
-            background-color: #0f172a;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-size: 200% 200%;
-            animation: meshGradient 15s ease infinite;
+        /* TACTICAL GRADIENT BACKGROUND */
+        .military-bg {
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+            position: relative;
         }
 
-        @keyframes meshGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .military-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* NAVBAR STYLING */
+        .nav-link {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.2s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        .nav-link:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
         }
 
         /* MANNEQUIN BASE SETUP */
@@ -53,17 +66,17 @@
             width: auto;
             object-fit: contain;
             z-index: 10;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
         }
 
-        /* --- AUTO-ALIGNING POSITION ENGINES --- */
+        /* POSITION ENGINES */
         .ribbon-rack-container { 
             position: absolute; 
-            top: 22.5%; 
+            top: 30.5%; 
             left: 69.5%;  
-            transform: translateX(-50%); /* Removed translate-y because we want it to build downward from the top-alignment point */
+            transform: translateX(-50%);
             display: flex; 
-            flex-direction: column; /* Changed from column-reverse to standard column */
+            flex-direction: column;
             gap: 1.5px; 
             align-items: center; 
             z-index: 20;
@@ -95,31 +108,22 @@
             z-index: 20;
         }
 
-        /* --- THE IPHONE/IPAD FIX (SCALING ENGINE) --- */
+        /* MOBILE SCALING */
         @media (max-width: 768px) {
             .mannequin-container { width: 380px; height: 520px; }
-            .ribbon-rack-container { top: 21.5%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
+            .ribbon-rack-container { top: 33.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
             .medals-container { top: 35.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
             .arcs-container { top: 35.8%; left: 30.8%; transform: translateX(-50%) scale(0.9); }
         }
 
         @media (max-width: 480px) {
             .mannequin-container { width: 320px; height: 440px; }
-            .ribbon-rack-container { top: 20%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
+            .ribbon-rack-container { top: 34%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
             .medals-container { top: 36%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
             .arcs-container { top: 36%; left: 30%; transform: translateX(-50%) scale(0.85); }
         }
 
-        /* ITEM MINIATURES */
-        .ribbon-mini, .medal-mini, .arc-mini {
-            animation: itemPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        @keyframes itemPop {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
+        /* RIBBON GRAPHICS */
         .ribbon-mini {
             width: 35px; height: 10px;
             background-size: 100% 100%;
@@ -129,33 +133,6 @@
             box-shadow: 0 0.5px 1px rgba(0,0,0,0.3);
         }
 
-        .medal-mini {
-            width: 20px; height: 32px;
-            display: flex;
-            flex-direction: column;
-        }
-        .medal-ribbon-part { width: 100%; height: 14px; border: 0.2px solid rgba(0,0,0,0.3); }
-        .medal-coin-part { 
-            width: 18px; height: 18px; 
-            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
-            border-radius: 50%; 
-            margin: -2px auto 0;
-            border: 0.5px solid rgba(0,0,0,0.4);
-        }
-
-        .arc-mini {
-            padding: 1px 6px;
-            background: #232d4b;
-            color: #ffd700;
-            border-radius: 4px;
-            font-size: 7px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border: 0.5px solid #ffd700;
-            white-space: nowrap;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
-
         .mini-star {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -163,64 +140,78 @@
             text-shadow: 0.5px 0.5px 1px black;
             width: 100%; text-align: center;
             letter-spacing: -1px;
-            pointer-events: none;
-        }
-
-        /* UI ANIMATIONS */
-        .list-item-anim {
-            animation: listItemIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        @keyframes listItemIn {
-            from { opacity: 0; transform: translateX(-15px); }
-            to { opacity: 1; transform: translateX(0); }
         }
 
         .fade-in-up {
-            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .btn-tap:active { transform: scale(0.96); }
+        .btn-tap:active { transform: scale(0.97); }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
     <!-- LANDING PAGE -->
-    <div id="landing-page" class="mesh-bg fixed inset-0 z-50 flex flex-col items-center justify-center p-6 text-white transition-all duration-700">
-        <div class="text-center fade-in-up">
-            <h1 class="text-6xl font-black tracking-tighter mb-4">
-                Broward <span class="text-indigo-400">JROTC</span>
-            </h1>
-            <p class="text-indigo-200/60 uppercase tracking-[0.3em] font-bold text-sm mb-12">Universal Uniform Builder</p>
-        </div>
+    <div id="landing-page" class="military-bg fixed inset-0 z-50 flex flex-col items-center justify-between p-6 text-white transition-all duration-700">
         
-        <div onclick="enterApp()" class="fade-in-up group relative p-8 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 hover:border-indigo-500/50 hover:bg-white/10 cursor-pointer transition-all w-full max-sm text-center" style="animation-delay: 0.2s">
-            <div class="absolute inset-0 bg-indigo-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <h3 class="font-bold text-2xl relative">Pompano Beach</h3>
-            <p class="text-indigo-400 text-[11px] font-black uppercase tracking-widest mt-2 relative">Tornado Battalion</p>
+        <!-- NAV BAR -->
+        <nav class="w-full max-w-5xl flex items-center justify-between py-4 fade-in-up">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center font-black text-xs">M</div>
+                <span class="font-black tracking-tight text-sm">MyUniform</span>
+            </div>
+            <div class="hidden md:flex items-center gap-2">
+                <a href="#" class="nav-link">Battalion</a>
+                <a href="#" class="nav-link">Resources</a>
+                <a href="#" class="nav-link">Cadet Portal</a>
+                <a href="#" class="nav-link">Contact</a>
+            </div>
+            <div class="w-8 md:hidden"></div>
+        </nav>
+
+        <!-- CENTER HERO -->
+        <div class="flex flex-col items-center text-center max-w-xl">
+            <div class="fade-in-up" style="animation-delay: 0.1s">
+                <h1 class="text-6xl font-black tracking-tighter mb-4">
+                    Broward <span class="text-indigo-400">JROTC</span>
+                </h1>
+                <p class="text-indigo-200/50 uppercase tracking-[0.4em] font-bold text-[10px] mb-12">Uniform Builder</p>
+            </div>
+            
+            <div onclick="enterApp()" class="btn-tap fade-in-up group relative p-6 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 hover:border-indigo-500/50 hover:bg-white/10 cursor-pointer transition-all w-full max-w-xs text-center" style="animation-delay: 0.2s">
+                <h3 class="font-bold text-lg relative">Pompano Beach</h3>
+                <p class="text-indigo-400 text-[10px] font-black uppercase tracking-widest mt-1 relative">Enter Battalion</p>
+            </div>
         </div>
+
+        <!-- FOOTER / DISCLAIMER -->
+        <footer class="w-full max-w-3xl text-center pb-8 opacity-40 fade-in-up" style="animation-delay: 0.4s">
+            <div class="h-px bg-white/20 w-16 mx-auto mb-6"></div>
+            <p class="text-[10px] uppercase tracking-widest font-bold mb-2">© 2024 MyUniform Pro. All Rights Reserved.</p>
+            <p class="text-[9px] leading-relaxed">This tool is for visual representation only. Always refer to official JROTC CCR 145-2 regulations for final ribbon placement and inspection standards. Not affiliated with the Department of the Army.</p>
+        </footer>
     </div>
 
     <!-- MAIN APP CONTENT -->
-    <div id="builder-content" class="hidden opacity-0 transition-opacity duration-500 min-h-screen">
-        <header class="p-4 px-6 flex items-center justify-between sticky top-0 bg-white/70 backdrop-blur-2xl z-40 border-b border-slate-200/50">
-            <button onclick="exitApp()" class="btn-tap bg-slate-100 hover:bg-slate-200 px-5 py-2.5 rounded-2xl font-bold text-xs uppercase tracking-tight transition-all">Back</button>
+    <div id="builder-content" class="hidden opacity-0 transition-opacity duration-500 min-h-screen pb-12">
+        <header class="p-4 px-6 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-xl z-40 border-b border-slate-200">
+            <button onclick="exitApp()" class="btn-tap bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl font-bold text-[11px] uppercase tracking-tight transition-all">Exit Builder</button>
             <div class="text-center">
-                <h2 class="text-lg font-black leading-tight">Pompano Beach HS</h2>
+                <h2 class="text-sm font-black leading-tight">Pompano Beach HS</h2>
                 <p class="text-indigo-600 font-black text-[9px] uppercase tracking-widest">Tornado Battalion</p>
             </div>
-            <button onclick="resetAll()" class="btn-tap px-5 py-2.5 text-red-500 hover:bg-red-50 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all">Reset</button>
+            <button onclick="resetAll()" class="btn-tap px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all text-right">Reset</button>
         </header>
 
-        <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             <!-- LEFT: VISUALIZER -->
             <div class="flex flex-col items-center lg:sticky lg:top-24">
-                <div class="bg-slate-900 w-full rounded-[3.5rem] p-6 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] flex items-center justify-center overflow-hidden border-8 border-slate-800 relative">
+                <div class="bg-slate-900 w-full rounded-[3rem] p-6 shadow-2xl flex items-center justify-center overflow-hidden border-[6px] border-slate-800 relative">
                     <div class="mannequin-container" id="mannequin">
                         <img src="assets/Male_Class_A.png" class="mannequin-img" alt="Uniform" onerror="this.src='https://placehold.co/480x620/0f172a/6366f1?text=Class+A+Uniform'">
                         <div id="u-ribbons" class="ribbon-rack-container"></div>
@@ -231,23 +222,24 @@
             </div>
 
             <!-- RIGHT: CONTROLS -->
-            <div class="bg-white rounded-[3rem] p-8 shadow-2xl shadow-slate-200/50 border border-slate-100 h-[760px] flex flex-col">
-                <div class="flex p-1.5 bg-slate-100/80 rounded-[2rem] mb-6">
-                    <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-3.5 rounded-[1.7rem] font-bold text-sm bg-white text-indigo-600 shadow-sm transition-all">Ribbons</button>
-                    <button id="btn-medals" onclick="setTab('medals')" class="flex-1 py-3.5 rounded-[1.7rem] font-bold text-sm text-slate-400 transition-all">Medals</button>
-                    <button id="btn-arcs" onclick="setTab('arcs')" class="flex-1 py-3.5 rounded-[1.7rem] font-bold text-sm text-slate-400 transition-all">Arcs</button>
+            <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-slate-100 h-[700px] flex flex-col">
+                <div class="flex p-1.5 bg-slate-100/80 rounded-2xl mb-6">
+                    <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-indigo-600 shadow-sm transition-all">Ribbons</button>
+                    <button id="btn-medals" onclick="setTab('medals')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Medals</button>
+                    <button id="btn-arcs" onclick="setTab('arcs')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Arcs</button>
                 </div>
                 
-                <div class="relative mb-6">
-                    <input type="text" id="globalSearch" onkeyup="renderSelections()" placeholder="Search awards..." class="w-full p-4 pl-6 rounded-2xl border border-slate-200 bg-slate-50 text-sm outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
+                <div class="relative mb-4">
+                    <input type="text" id="globalSearch" onkeyup="renderSelections()" placeholder="Search awards..." class="w-full p-3 pl-5 rounded-xl border border-slate-200 bg-slate-50 text-xs outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
                 </div>
                 
-                <div id="selection-list" class="space-y-3 overflow-y-auto pr-2 flex-1 scroll-smooth"></div>
+                <div id="selection-list" class="space-y-2 overflow-y-auto pr-2 flex-1 scroll-smooth"></div>
             </div>
         </div>
     </div>
 
     <script>
+        // DATA ARRAYS (OFFICIAL_RIBBONS, POMPANO_RIBBONS, MEDALS, ARCS remain same as previous version)
         const OFFICIAL_RIBBONS = [
             { id: 'hero', name: 'Medal for Heroism', precedence: 1, img: 'assets/army_jrotc_medal_for_heroism_ribbon.png' },
             { id: 'sup-c', name: 'Superior Cadet Award', precedence: 2, img: 'assets/army_jrotc_superior_cadet_ribbon.png' },
@@ -320,31 +312,15 @@
             { id: 'a-rifle', name: 'Rifle Team' },
             { id: 'a-challenge', name: 'Cadet Challenge' },
             { id: 'a-jlab', name: 'JLAB' }
-        ].sort((a,b) => a.name.localeCompare(b.name));
+        ];
 
         let state = { ribbons: new Map(), medals: new Set(), arcs: new Set(), tab: 'ribbons' };
 
-        // Persistence
-        if(localStorage.getItem('myuniform_pompano_state')){
-            const saved = JSON.parse(localStorage.getItem('myuniform_pompano_state'));
-            state.ribbons = new Map(saved.ribbons);
-            state.medals = new Set(saved.medals);
-            state.arcs = new Set(saved.arcs);
-        }
-
-        function saveState(){
-            localStorage.setItem('myuniform_pompano_state', JSON.stringify({
-                ribbons: [...state.ribbons],
-                medals: [...state.medals],
-                arcs: [...state.arcs]
-            }));
-        }
-
+        // INITIALIZATION
         function enterApp() {
             const lp = document.getElementById('landing-page');
             const bc = document.getElementById('builder-content');
             lp.style.opacity = '0';
-            lp.style.pointerEvents = 'none';
             setTimeout(() => {
                 lp.classList.add('hidden');
                 bc.classList.remove('hidden');
@@ -364,8 +340,8 @@
             ['ribbons', 'medals', 'arcs'].forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
                 btn.className = (t === tab) 
-                    ? "flex-1 py-3.5 rounded-[1.7rem] font-bold text-sm bg-white text-indigo-600 shadow-sm"
-                    : "flex-1 py-3.5 rounded-[1.7rem] font-bold text-sm text-slate-400";
+                    ? "flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-indigo-600 shadow-sm"
+                    : "flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400";
             });
             renderSelections();
         }
@@ -374,20 +350,12 @@
             let count = (state.ribbons.get(id) || 0) + d;
             if (count <= 0) state.ribbons.delete(id); 
             else state.ribbons.set(id, Math.min(count, 5));
-            triggerMannequinFeedback();
-            updatePreview(); renderSelections(true); saveState();
+            updatePreview(); renderSelections(true);
         }
 
         function toggleItem(type, id) {
             state[type].has(id) ? state[type].delete(id) : state[type].add(id);
-            triggerMannequinFeedback();
-            updatePreview(); renderSelections(true); saveState();
-        }
-
-        function triggerMannequinFeedback() {
-            const man = document.getElementById('mannequin');
-            man.style.transform = 'scale(1.02)';
-            setTimeout(() => man.style.transform = 'scale(1)', 150);
+            updatePreview(); renderSelections(true);
         }
 
         function renderSelections(skipAnim = false) {
@@ -402,78 +370,52 @@
                 available.forEach((r, i) => {
                     const count = state.ribbons.get(r.id) || 0;
                     const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-4 rounded-2xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500/20' : 'bg-white border-slate-100'}`;
-                    if(!skipAnim) {
-                        div.classList.add('list-item-anim');
-                        div.style.animationDelay = `${i * 0.03}s`;
-                    }
+                    div.className = `flex items-center justify-between p-3 rounded-xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
                     div.innerHTML = `
                         <div class="flex items-center gap-3">
-                            <div class="w-14 h-4 border border-slate-200 bg-white flex items-center justify-center overflow-hidden shadow-inner">
+                            <div class="w-10 h-3 border border-slate-200 bg-white">
                                 <img src="${r.img}" class="w-full h-full object-fill" onerror="this.style.opacity='0'">
                             </div>
-                            <span class="text-[11px] font-bold text-slate-700">${r.name}</span>
+                            <span class="text-[10px] font-bold text-slate-700">${r.name}</span>
                         </div>
-                        <div class="flex items-center bg-white rounded-xl border border-slate-200/50 p-1 shadow-sm">
-                            <button onclick="updateRibbon('${r.id}', -1)" class="btn-tap w-8 h-8 font-bold text-slate-400 hover:text-red-500 transition-colors">-</button>
-                            <span class="w-6 text-center text-xs font-black text-indigo-600">${count}</span>
-                            <button onclick="updateRibbon('${r.id}', 1)" class="btn-tap w-8 h-8 text-indigo-600 font-bold hover:bg-indigo-50 rounded-lg transition-all">+</button>
+                        <div class="flex items-center bg-white rounded-lg border border-slate-200 p-1">
+                            <button onclick="updateRibbon('${r.id}', -1)" class="w-6 h-6 text-xs font-bold text-slate-400">-</button>
+                            <span class="w-4 text-center text-[10px] font-black text-indigo-600">${count}</span>
+                            <button onclick="updateRibbon('${r.id}', 1)" class="w-6 h-6 text-xs text-indigo-600 font-bold">+</button>
                         </div>`;
                     list.appendChild(div);
                 });
             } else if (state.tab === 'medals') {
-                const available = MEDALS.filter(m => m.name.toLowerCase().includes(search));
-                available.forEach((m, i) => {
+                MEDALS.filter(m => m.name.toLowerCase().includes(search)).forEach(m => {
                     const active = state.medals.has(m.id);
                     const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${active ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
+                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-indigo-500 bg-indigo-50' : 'bg-white'}`;
                     div.onclick = () => toggleItem('medals', m.id);
-                    if(!skipAnim) {
-                        div.classList.add('list-item-anim');
-                        div.style.animationDelay = `${i * 0.03}s`;
-                    }
-                    div.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-4 h-4 rounded-full border border-slate-200" style="background:${m.color}"></div>
-                            <span class="text-[11px] font-bold text-slate-700">${m.name}</span>
-                        </div>
-                        <span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span>`;
+                    div.innerHTML = `<span class="text-[10px] font-bold">${m.name}</span><span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span>`;
                     list.appendChild(div);
                 });
             } else {
-                const available = ARCS.filter(a => a.name.toLowerCase().includes(search));
-                available.forEach((a, i) => {
+                ARCS.filter(a => a.name.toLowerCase().includes(search)).forEach(a => {
                     const active = state.arcs.has(a.id);
                     const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${active ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
+                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-indigo-500 bg-indigo-50' : 'bg-white'}`;
                     div.onclick = () => toggleItem('arcs', a.id);
-                    if(!skipAnim) {
-                        div.classList.add('list-item-anim');
-                        div.style.animationDelay = `${i * 0.03}s`;
-                    }
-                    div.innerHTML = `<span class="text-[11px] font-bold text-slate-700">${a.name} Arc</span>
-                                     <span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span>`;
+                    div.innerHTML = `<span class="text-[10px] font-bold">${a.name} Arc</span><span class="text-indigo-600 font-black">${active ? '✓' : '+'}</span>`;
                     list.appendChild(div);
                 });
             }
         }
 
         function updatePreview() {
-            // RENDER RIBBONS
             const rContainer = document.getElementById('u-ribbons');
             rContainer.innerHTML = '';
-            
-            // 1. Get all active ribbons sorted by precedence (1 is highest)
             const activeR = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
                 .filter(r => state.ribbons.has(r.id))
                 .sort((a,b) => a.precedence - b.precedence);
 
-            // 2. Logic to build from TOP-LEFT:
-            // Group into rows of 3 starting from the highest precedence (top)
             for(let i=0; i < activeR.length; i += 3) {
                 const row = document.createElement('div');
                 row.className = "flex gap-[1.5px]";
-                
                 activeR.slice(i, i+3).forEach(r => {
                     const d = document.createElement('div');
                     d.className = 'ribbon-mini';
@@ -487,57 +429,38 @@
                     }
                     row.appendChild(d);
                 });
-                // Append rows so first group is at the top
                 rContainer.appendChild(row);
             }
 
-            // RENDER MEDALS
             const mContainer = document.getElementById('u-medals');
             mContainer.innerHTML = '';
             MEDALS.filter(m => state.medals.has(m.id)).forEach(m => {
                 const d = document.createElement('div');
                 d.className = 'medal-mini';
-                d.innerHTML = `<div class="medal-ribbon-part" style="background:${m.color}"></div><div class="medal-coin-part"></div>`;
+                d.style.width = '18px'; d.style.height = '28px';
+                d.innerHTML = `<div style="height:12px;background:${m.color}"></div><div style="width:16px;height:16px;background:gold;border-radius:50%;margin:-2px auto 0"></div>`;
                 mContainer.appendChild(d);
             });
 
-            // RENDER ARCS
             const aContainer = document.getElementById('u-arcs');
             aContainer.innerHTML = '';
             ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
                 const d = document.createElement('div');
                 d.className = 'arc-mini';
-                d.innerText = a.name;
+                d.style.padding = '1px 5px'; d.style.fontSize = '6px';
+                d.style.background = '#232d4b'; d.style.color = 'gold'; d.style.border = '0.5px solid gold';
+                d.style.borderRadius = '3px'; d.innerText = a.name;
                 aContainer.appendChild(d);
             });
         }
 
         function resetAll() {
-            const items = document.querySelectorAll('#selection-list > div');
-            items.forEach((el, i) => {
-                setTimeout(() => {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateX(20px)';
-                }, i * 15);
-            });
-            
-            setTimeout(() => {
-                state.ribbons.clear();
-                state.medals.clear();
-                state.arcs.clear();
-                if(document.getElementById('globalSearch')) document.getElementById('globalSearch').value = '';
-                updatePreview();
-                renderSelections();
-                saveState();
-            }, 300);
+            state.ribbons.clear();
+            state.medals.clear();
+            state.arcs.clear();
+            updatePreview();
+            renderSelections();
         }
-
-        window.onload = () => {
-            if (document.getElementById('builder-content').classList.contains('hidden') === false) {
-                renderSelections();
-                updatePreview();
-            }
-        };
     </script>
 </body>
 </html>
