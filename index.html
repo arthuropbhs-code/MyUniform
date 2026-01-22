@@ -108,21 +108,6 @@
             z-index: 20;
         }
 
-        /* MOBILE SCALING */
-        @media (max-width: 768px) {
-            .mannequin-container { width: 380px; height: 520px; }
-            .ribbon-rack-container { top: 33.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
-            .medals-container { top: 35.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
-            .arcs-container { top: 35.8%; left: 30.8%; transform: translateX(-50%) scale(0.9); }
-        }
-
-        @media (max-width: 480px) {
-            .mannequin-container { width: 320px; height: 440px; }
-            .ribbon-rack-container { top: 34%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
-            .medals-container { top: 36%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
-            .arcs-container { top: 36%; left: 30%; transform: translateX(-50%) scale(0.85); }
-        }
-
         /* RIBBON GRAPHICS */
         .ribbon-mini {
             width: 35px; height: 10px;
@@ -131,6 +116,19 @@
             border: 0.4px solid rgba(0,0,0,0.9);
             position: relative;
             box-shadow: 0 0.5px 1px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .placeholder-ribbon {
+            background: repeating-linear-gradient(
+                45deg,
+                var(--ribbon-color, #475569),
+                var(--ribbon-color, #475569) 2px,
+                rgba(0,0,0,0.2) 2px,
+                rgba(0,0,0,0.2) 4px
+            );
         }
 
         .mini-star {
@@ -140,6 +138,7 @@
             text-shadow: 0.5px 0.5px 1px black;
             width: 100%; text-align: center;
             letter-spacing: -1px;
+            z-index: 5;
         }
 
         .fade-in-up {
@@ -152,6 +151,10 @@
         }
 
         .btn-tap:active { transform: scale(0.97); }
+
+        /* SCROLLBAR */
+        #selection-list::-webkit-scrollbar { width: 4px; }
+        #selection-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="antialiased">
@@ -213,7 +216,7 @@
             <div class="flex flex-col items-center lg:sticky lg:top-24">
                 <div class="bg-slate-900 w-full rounded-[3rem] p-6 shadow-2xl flex items-center justify-center overflow-hidden border-[6px] border-slate-800 relative">
                     <div class="mannequin-container" id="mannequin">
-                        <img src="assets/Male_Class_A.png" class="mannequin-img" alt="Uniform" onerror="this.src='https://placehold.co/480x620/0f172a/6366f1?text=Class+A+Uniform'">
+                        <img src="https://placehold.co/480x620/0f172a/6366f1?text=Class+A+Uniform" id="mannequin-base" class="mannequin-img" alt="Uniform">
                         <div id="u-ribbons" class="ribbon-rack-container"></div>
                         <div id="u-medals" class="medals-container"></div>
                         <div id="u-arcs" class="arcs-container"></div>
@@ -239,7 +242,6 @@
     </div>
 
     <script>
-        // DATA ARRAYS (OFFICIAL_RIBBONS, POMPANO_RIBBONS, MEDALS, ARCS remain same as previous version)
         const OFFICIAL_RIBBONS = [
             { id: 'hero', name: 'Medal for Heroism', precedence: 1, img: 'assets/army_jrotc_medal_for_heroism_ribbon.png' },
             { id: 'sup-c', name: 'Superior Cadet Award', precedence: 2, img: 'assets/army_jrotc_superior_cadet_ribbon.png' },
@@ -249,74 +251,90 @@
             { id: 'n14', name: 'Perfect Attendance Award N-1-4', precedence: 6, img: 'assets/army_jrotc_perfect_attendance_ribbon.png' },
             { id: 'n15', name: 'Student Governement Award N-1-5', precedence: 7, img: 'assets/army_jrotc_student_government_ribbon.png' },
             { id: 'n16', name: 'Leadership Education & Training N-1-6', precedence: 8, img: 'assets/army_jrotc_leadership_education_training_service_ribbon.png' },
-            { id: 'n17', name: 'Superior Instructor N-1-7 Ribbon', precedence: 9, img: 'assets/army_jrotc_n_1_7_ribbon.png' },
-            { id: 'n18', name: 'CPR First Aid N-1-8 Ribbon', precedence: 10, img: 'assets/army_jrotc_n_1_8_ribbon.png' },
-            { id: 'n19', name: 'Distinguished Cadet N-1-9 Ribbon', precedence: 11, img: 'assets/army_jrotc_n_1_9_ribbon.png' },
-            { id: 'n110', name: 'Honor Cadet N-1-10 Ribbon', precedence: 12, img: 'assets/army_jrotc_n_1_10_ribbon.png' },
-            { id: 'n31', name: 'Dai/Sai Instructor Leadership N-3-1 Ribbon', precedence: 13, img: 'assets/army_jrotc_dai_sai_instructor_leadership_ribbon.png' },
-            { id: 'n32', name: 'Personal Appearance N-3-2 Ribbon', precedence: 14, img: 'assets/army_jrotc_personal_appearance_ribbon.png' },
-            { id: 'n33', name: 'Profiency N-3-3 Ribbon', precedence: 15, img: 'assets/army_jrotc_proficiency_ribbon.png' },
-            { id: 'n34', name: 'Drill Team N-3-4 Ribbon', precedence: 16, img: 'assets/army_jrotc_drill_team_ribbon.png' },
-            { id: 'n35', name: 'Orienteering N-3-5 Ribbon', precedence: 17, img: 'assets/army_jrotc_orienteering_ribbon.png' },
-            { id: 'n36', name: 'Color | Honor Guard N-3-6 Ribbon', precedence: 18, img: 'assets/army_jrotc_color_guard_ribbon.png' },
-            { id: 'n37', name: 'Rifle | Marksmanship Team N-3-7 Ribbon', precedence: 19, img: 'assets/army_jrotc_rifle_team_ribbon.png' },
-            { id: 'n38', name: 'Adventure Training Team N-3-8 Ribbon', precedence: 20, img: 'assets/army_jrotc_adventure_training_ribbon.png' },
-            { id: 'n39', name: 'Commendation N-3-9 Ribbon', precedence: 21, img: 'assets/army_jrotc_commendation_ribbon.png' },
-            { id: 'n310', name: 'Good Conduct N-3-10 Ribbon', precedence: 22, img: 'assets/army_jrotc_good_conduct_ribbon.png' },
-            { id: 'n311', name: 'JCLC Participation N-3-11 Ribbon', precedence: 23, img: 'assets/army_jrotc_jclc_participation_ribbon.png' },
-            { id: 'n312', name: 'Championship Drill Team N-3-12 Ribbon', precedence: 24, img: 'assets/army_jrotc_n_3_12_ribbon.png' },
-            { id: 'n313', name: 'Raider Team N-3-13 Ribbon', precedence: 25, img: 'assets/army_jrotc_n_3_13_ribbon.png' },
-            { id: 'n314', name: 'Recondo / Rappelling N-3-14 Ribbon', precedence: 26, img: 'assets/army_jrotc_n_3_14_ribbon.png' },
-            { id: 'n315', name: 'Meritorious Actions N-3-15 Ribbon', precedence: 27, img: 'assets/army_jrotc_n_3_15_ribbon.png' },
-            { id: 'n21', name: 'Varsity Athletics Ribbon N-2-1', precedence: 28, img: 'assets/army_jrotc_varsity_athletics_ribbon.png' },
-            { id: 'n22', name: 'Physical Fitness N-2-2 Ribbon', precedence: 29, img: 'assets/army_jrotc_physical_fitness_ribbon.png' },
-            { id: 'n23', name: 'JROTC Athletics N-2-3 Ribbon', precedence: 30, img: 'assets/army_jrotc_athletics_ribbon.png' },
-            { id: 'n24', name: 'Junior Varsity Athletics N-2-4 Ribbon', precedence: 31, img: 'assets/army_jrotc_n_2_4_ribbon.png' },
-            { id: 'n25', name: 'Athletic Service N-2-5 Ribbon', precedence: 32, img: 'assets/army_jrotc_n_2_5_ribbon.png' },
-            { id: 'n41', name: 'Parade N-4-1 Ribbon', precedence: 33, img: 'assets/army_jrotc_parade_ribbon.png' },
-            { id: 'n42', name: 'Recruiting N-4-2 Ribbon', precedence: 34, img: 'assets/army_jrotc_recruiting_ribbon.png' },
-            { id: 'n43', name: 'School Support N-4-3 Ribbon', precedence: 35, img: 'assets/army_jrotc_n_4_3_ribbon.png' },
-            { id: 'n44', name: 'Community Service N-4-4 Ribbon', precedence: 36, img: 'assets/army_jrotc_n_4_4_ribbon.png' },
-            { id: 'n45', name: 'Confidence Course N-4-5 Ribbon', precedence: 37, img: 'assets/army_jrotc_n_4_5_ribbon.png' },
-            { id: 'n46', name: 'Service Learning N-4-6 Ribbon', precedence: 38, img: 'assets/army_jrotc_service_learning_ribbon.png' },
-            { id: 'n47', name: 'Excellent Staff Performance N-4-7 Ribbon', precedence: 39, img: 'assets/army_jrotc_excellent_staff_performance_ribbon.png' }
+            { id: 'n17', name: 'Superior Instructor N-1-7', precedence: 9, img: 'assets/army_jrotc_n_1_7_ribbon.png' },
+            { id: 'n18', name: 'CPR First Aid N-1-8', precedence: 10, img: 'assets/army_jrotc_n_1_8_ribbon.png' },
+            { id: 'n19', name: 'Distinguished Cadet N-1-9', precedence: 11, img: 'assets/army_jrotc_n_1_9_ribbon.png' },
+            { id: 'n110', name: 'Honor Cadet N-1-10', precedence: 12, img: 'assets/army_jrotc_n_1_10_ribbon.png' },
+            { id: 'n31', name: 'Dai/Sai Instructor Leadership N-3-1', precedence: 13, img: 'assets/army_jrotc_dai_sai_instructor_leadership_ribbon.png' },
+            { id: 'n32', name: 'Personal Appearance N-3-2', precedence: 14, img: 'assets/army_jrotc_personal_appearance_ribbon.png' },
+            { id: 'n33', name: 'Profiency N-3-3', precedence: 15, img: 'assets/army_jrotc_proficiency_ribbon.png' },
+            { id: 'n34', name: 'Drill Team N-3-4', precedence: 16, img: 'assets/army_jrotc_drill_team_ribbon.png' },
+            { id: 'n35', name: 'Orienteering N-3-5', precedence: 17, img: 'assets/army_jrotc_orienteering_ribbon.png' },
+            { id: 'n36', name: 'Color | Honor Guard N-3-6', precedence: 18, img: 'assets/army_jrotc_color_guard_ribbon.png' },
+            { id: 'n37', name: 'Rifle | Marksmanship Team N-3-7', precedence: 19, img: 'assets/army_jrotc_rifle_team_ribbon.png' },
+            { id: 'n38', name: 'Adventure Training Team N-3-8', precedence: 20, img: 'assets/army_jrotc_adventure_training_ribbon.png' },
+            { id: 'n39', name: 'Commendation N-3-9', precedence: 21, img: 'assets/army_jrotc_commendation_ribbon.png' },
+            { id: 'n310', name: 'Good Conduct N-3-10', precedence: 22, img: 'assets/army_jrotc_good_conduct_ribbon.png' },
+            { id: 'n311', name: 'JCLC Participation N-3-11', precedence: 23, img: 'assets/army_jrotc_jclc_participation_ribbon.png' },
+            { id: 'n312', name: 'Championship Drill Team N-3-12', precedence: 24, img: 'assets/army_jrotc_n_3_12_ribbon.png' },
+            { id: 'n313', name: 'Raider Team N-3-13', precedence: 25, img: 'assets/army_jrotc_n_3_13_ribbon.png' },
+            { id: 'n314', name: 'Recondo / Rappelling N-3-14', precedence: 26, img: 'assets/army_jrotc_n_3_14_ribbon.png' },
+            { id: 'n315', name: 'Meritorious Actions N-3-15', precedence: 27, img: 'assets/army_jrotc_n_3_15_ribbon.png' },
+            { id: 'n21', name: 'Varsity Athletics N-2-1', precedence: 28, img: 'assets/army_jrotc_varsity_athletics_ribbon.png' },
+            { id: 'n22', name: 'Physical Fitness N-2-2', precedence: 29, img: 'assets/army_jrotc_physical_fitness_ribbon.png' },
+            { id: 'n23', name: 'JROTC Athletics N-2-3', precedence: 30, img: 'assets/army_jrotc_athletics_ribbon.png' },
+            { id: 'n24', name: 'Junior Varsity Athletics N-2-4', precedence: 31, img: 'assets/army_jrotc_n_2_4_ribbon.png' },
+            { id: 'n25', name: 'Athletic Service N-2-5', precedence: 32, img: 'assets/army_jrotc_n_2_5_ribbon.png' },
+            { id: 'n41', name: 'Parade N-4-1', precedence: 33, img: 'assets/army_jrotc_parade_ribbon.png' },
+            { id: 'n42', name: 'Recruiting N-4-2', precedence: 34, img: 'assets/army_jrotc_recruiting_ribbon.png' },
+            { id: 'n43', name: 'School Support N-4-3', precedence: 35, img: 'assets/army_jrotc_n_4_3_ribbon.png' },
+            { id: 'n44', name: 'Community Service N-4-4', precedence: 36, img: 'assets/army_jrotc_n_4_4_ribbon.png' },
+            { id: 'n45', name: 'Confidence Course N-4-5', precedence: 37, img: 'assets/army_jrotc_n_4_5_ribbon.png' },
+            { id: 'n46', name: 'Service Learning N-4-6', precedence: 38, img: 'assets/army_jrotc_service_learning_ribbon.png' },
+            { id: 'n47', name: 'Excellent Staff Performance N-4-7', precedence: 39, img: 'assets/army_jrotc_excellent_staff_performance_ribbon.png' }
         ];
 
+        // POMPANO UNOFFICIAL LIST
         const POMPANO_RIBBONS = [
-            { id: 'p1', name: 'Military Appreciation Ribbon', precedence: 200, img: 'assets/Military_Appreciation_Ribbon.png' },
-            { id: 'p2', name: 'Q1 Cadet of the Quarter', precedence: 201, img: 'assets/Q1_Cadet_of_Quarter_Ribbion.png' },
-            { id: 'p3', name: 'Q1 Company of the Quarter', precedence: 202, img: 'assets/Q1_Company_Of_Quarter_Ribbon.png' },
-            { id: 'p4', name: 'Q2 Cadet of the Quarter', precedence: 203, img: 'assets/Q2_Cadet_Of_Quarter_Ribbon.png' },
-            { id: 'p5', name: 'Q3 Cadet of the Quarter', precedence: 204, img: 'assets/Q3_Cadet_Of_Quarter_Ribbion.png' },
-            { id: 'p6', name: 'Q4 Cadet of the Quarter', precedence: 205, img: 'assets/Q4_Cadet_Of_Quarter_Ribbion.png' },
-            { id: 'p7', name: 'Q4 Company of the Quarter', precedence: 206, img: 'assets/Q4_Company_Of_Quarter.png' },
-            { id: 'p8', name: 'Funeral Ribbon', precedence: 207, img: 'assets/Funeral_Ribbon.png' },
-            { id: 'p9', name: 'Honor Company Ribbon', precedence: 208, img: 'assets/Honor_Company_Ribbon.png' },
-            { id: 'p10', name: 'EC Attendance Ribbon', precedence: 209, img: 'assets/EC_Attendence_Ribbon.png' },
-            { id: 'p11', name: 'EC Honor Cadet Ribbon', precedence: 210, img: 'assets/EC_Honor_Cadet_ribbion.png' },
-            { id: 'p12', name: 'EC Honor Company Ribbon', precedence: 211, img: 'assets/EC_Honor_Company_Ribbon.png' },
-            { id: 'p13', name: 'Company Req Completion Ribbon', precedence: 212, img: 'assets/Company_Req_Completion_Ribbon.png' }
+            { id: 'p-ccq', name: 'Company Commander of the Quarter', precedence: 300, color: '#166534' },
+            { id: 'p-cxoq', name: 'Company XO of the Quarter', precedence: 301, color: '#1e40af' },
+            { id: 'p-c1sq', name: 'Company First Sergeant of the Quarter', precedence: 302, color: '#991b1b' },
+            { id: 'p-plq', name: 'Platoon Leader of the Quarter', precedence: 303, color: '#1e3a8a' },
+            { id: 'p-psq', name: 'Platoon Sergeant of the Quarter', precedence: 304, color: '#1e293b' },
+            { id: 'p-slq', name: 'Squad Leader of the Quarter', precedence: 305, color: '#3f6212' },
+            { id: 'p-smq', name: 'Squad Member of the Quarter', precedence: 306, color: '#0f172a' },
+            { id: 'p-cplq', name: 'Company Platoon Leader of the Quarter', precedence: 307, color: '#4c1d95' },
+            { id: 'p-cpsq', name: 'Company Platoon Sergeant of the Quarter', precedence: 308, color: '#7c2d12' },
+            { id: 'p-cslq', name: 'Company Squad Leader of the Quarter', precedence: 309, color: '#064e3b' },
+            { id: 'p-csmq', name: 'Company Squad Member of the Quarter', precedence: 310, color: '#451a03' },
+            { id: 'p-ma', name: 'Military Appreciation', precedence: 311, img: 'assets/Military_Appreciation_Ribbon.png', color: '#854d0e' },
+            { id: 'p-echc', name: 'Experience Camp Honor Cadet', precedence: 312, color: '#b45309' },
+            { id: 'p-echo', name: 'Experience Camp Honor Company', precedence: 313, color: '#c2410c' },
+            { id: 'p-ecc', name: 'Experience Camp Cadet Cadre', precedence: 314, color: '#be123c' },
+            { id: 'p-eca', name: 'Experience Camp Attendance', precedence: 315, color: '#0d9488' },
+            { id: 'p-jpa', name: 'JPA Ribbon', precedence: 316, color: '#334155' },
+            { id: 'p-dai', name: 'DAI Award Ribbon', precedence: 317, color: '#4d7c0f' },
+            { id: 'p-q1c', name: 'Q1 Company of the Quarter', precedence: 318, img: 'assets/Q1_Company_Of_Quarter_Ribbon.png', color: '#1d4ed8' },
+            { id: 'p-q2c', name: 'Q2 Company of the Quarter', precedence: 319, color: '#1e3a8a' },
+            { id: 'p-q3c', name: 'Q3 Company of the Quarter', precedence: 320, color: '#1e40af' },
+            { id: 'p-q4c', name: 'Q4 Company of the Quarter', precedence: 321, color: '#1e3a8a' },
+            { id: 'p-hc', name: 'Honor Company', precedence: 322, img: 'assets/Honor_Company_Ribbon.png', color: '#ca8a04' },
+            { id: 'p-q1cc', name: 'Q1 Company Cadet of the Quarter', precedence: 323, color: '#0369a1' },
+            { id: 'p-q2cc', name: 'Q2 Company Cadet of the Quarter', precedence: 324, color: '#0369a1' },
+            { id: 'p-q3cc', name: 'Q3 Company Cadet of the Quarter', precedence: 325, color: '#0369a1' },
+            { id: 'p-q4cc', name: 'Q4 Company Cadet of the Quarter', precedence: 326, color: '#0369a1' },
+            { id: 'p-fun', name: 'Funeral Ribbon', precedence: 327, img: 'assets/Funeral_Ribbon.png', color: '#020617' },
+            { id: 'p-100f', name: '100 Flags Ribbon', precedence: 328, color: '#991b1b' },
+            { id: 'p-haf', name: 'Highest Amount of Flags', precedence: 329, color: '#854d0e' },
+            { id: 'p-cfr', name: 'Company Flag Requirements', precedence: 330, color: '#166534' }
         ];
 
         const MEDALS = [
             { id: 'm-hero', name: 'Heroism Medal', color: '#8b0000' },
             { id: 'm-sup', name: 'Superior Cadet Medal', color: '#1e3a8a' },
-            { id: 'm-acad', name: 'Academic Achievement', color: '#fbbf24' },
-            { id: 'm-cond', name: 'Good Conduct', color: '#16a34a' }
+            { id: 'm-acad', name: 'Academic Achievement', color: '#fbbf24' }
         ];
 
         const ARCS = [
             { id: 'a-drill', name: 'Drill Team' },
             { id: 'a-color', name: 'Color Guard' },
             { id: 'a-raider', name: 'Raider' },
-            { id: 'a-rifle', name: 'Rifle Team' },
-            { id: 'a-challenge', name: 'Cadet Challenge' },
-            { id: 'a-jlab', name: 'JLAB' }
+            { id: 'a-rifle', name: 'Rifle Team' }
         ];
 
         let state = { ribbons: new Map(), medals: new Set(), arcs: new Set(), tab: 'ribbons' };
 
-        // INITIALIZATION
+        // CORE FUNCTIONS
         function enterApp() {
             const lp = document.getElementById('landing-page');
             const bc = document.getElementById('builder-content');
@@ -350,41 +368,61 @@
             let count = (state.ribbons.get(id) || 0) + d;
             if (count <= 0) state.ribbons.delete(id); 
             else state.ribbons.set(id, Math.min(count, 5));
-            updatePreview(); renderSelections(true);
+            updatePreview(); renderSelections();
         }
 
         function toggleItem(type, id) {
             state[type].has(id) ? state[type].delete(id) : state[type].add(id);
-            updatePreview(); renderSelections(true);
+            updatePreview(); renderSelections();
         }
 
-        function renderSelections(skipAnim = false) {
+        function renderSelections() {
             const list = document.getElementById('selection-list');
             const search = document.getElementById('globalSearch').value.toLowerCase();
             list.innerHTML = '';
             
             if (state.tab === 'ribbons') {
-                const available = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
-                    .filter(r => r.name.toLowerCase().includes(search));
-                
-                available.forEach((r, i) => {
-                    const count = state.ribbons.get(r.id) || 0;
-                    const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
-                    div.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-3 border border-slate-200 bg-white">
-                                <img src="${r.img}" class="w-full h-full object-fill" onerror="this.style.opacity='0'">
+                const renderCategory = (title, items) => {
+                    const filtered = items.filter(r => r.name.toLowerCase().includes(search));
+                    if (filtered.length === 0) return;
+                    
+                    const catHeader = document.createElement('div');
+                    catHeader.className = "text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2 mt-4 px-2";
+                    catHeader.innerText = title;
+                    list.appendChild(catHeader);
+
+                    filtered.forEach(r => {
+                        const count = state.ribbons.get(r.id) || 0;
+                        const div = document.createElement('div');
+                        div.className = `flex items-center justify-between p-3 rounded-xl border transition-all ${count > 0 ? 'border-indigo-500 bg-indigo-50' : 'bg-white border-slate-100'}`;
+                        
+                        // Placeholder logic for UI list
+                        let ribbonDisplay = '';
+                        if (r.img) {
+                            ribbonDisplay = `<img src="${r.img}" class="w-full h-full object-fill" onerror="this.parentNode.classList.add('placeholder-ribbon'); this.style.opacity='0'">`;
+                        } else {
+                            ribbonDisplay = `<div class="w-full h-full placeholder-ribbon" style="--ribbon-color: ${r.color}"></div>`;
+                        }
+
+                        div.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-3 border border-slate-200 bg-white overflow-hidden">
+                                    ${ribbonDisplay}
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-700 leading-tight">${r.name}</span>
                             </div>
-                            <span class="text-[10px] font-bold text-slate-700">${r.name}</span>
-                        </div>
-                        <div class="flex items-center bg-white rounded-lg border border-slate-200 p-1">
-                            <button onclick="updateRibbon('${r.id}', -1)" class="w-6 h-6 text-xs font-bold text-slate-400">-</button>
-                            <span class="w-4 text-center text-[10px] font-black text-indigo-600">${count}</span>
-                            <button onclick="updateRibbon('${r.id}', 1)" class="w-6 h-6 text-xs text-indigo-600 font-bold">+</button>
-                        </div>`;
-                    list.appendChild(div);
-                });
+                            <div class="flex items-center bg-white rounded-lg border border-slate-200 p-0.5 ml-2 shrink-0">
+                                <button onclick="updateRibbon('${r.id}', -1)" class="w-6 h-6 text-xs font-bold text-slate-400">-</button>
+                                <span class="w-4 text-center text-[10px] font-black text-indigo-600">${count}</span>
+                                <button onclick="updateRibbon('${r.id}', 1)" class="w-6 h-6 text-xs text-indigo-600 font-bold">+</button>
+                            </div>`;
+                        list.appendChild(div);
+                    });
+                };
+
+                renderCategory("Pompano Unofficial", POMPANO_RIBBONS);
+                renderCategory("Official JROTC", OFFICIAL_RIBBONS);
+
             } else if (state.tab === 'medals') {
                 MEDALS.filter(m => m.name.toLowerCase().includes(search)).forEach(m => {
                     const active = state.medals.has(m.id);
@@ -409,7 +447,8 @@
         function updatePreview() {
             const rContainer = document.getElementById('u-ribbons');
             rContainer.innerHTML = '';
-            const activeR = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
+            const allPossible = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS];
+            const activeR = allPossible
                 .filter(r => state.ribbons.has(r.id))
                 .sort((a,b) => a.precedence - b.precedence);
 
@@ -419,7 +458,14 @@
                 activeR.slice(i, i+3).forEach(r => {
                     const d = document.createElement('div');
                     d.className = 'ribbon-mini';
-                    d.style.backgroundImage = `url(${r.img})`;
+                    
+                    if (r.img) {
+                        d.style.backgroundImage = `url(${r.img})`;
+                    } else {
+                        d.classList.add('placeholder-ribbon');
+                        d.style.setProperty('--ribbon-color', r.color);
+                    }
+
                     const c = state.ribbons.get(r.id);
                     if(c > 1) {
                         const s = document.createElement('div');
@@ -432,13 +478,12 @@
                 rContainer.appendChild(row);
             }
 
+            // Simple medal/arc renders
             const mContainer = document.getElementById('u-medals');
             mContainer.innerHTML = '';
             MEDALS.filter(m => state.medals.has(m.id)).forEach(m => {
                 const d = document.createElement('div');
-                d.className = 'medal-mini';
-                d.style.width = '18px'; d.style.height = '28px';
-                d.innerHTML = `<div style="height:12px;background:${m.color}"></div><div style="width:16px;height:16px;background:gold;border-radius:50%;margin:-2px auto 0"></div>`;
+                d.innerHTML = `<div style="width:18px; height:28px;"><div style="height:12px;background:${m.color}"></div><div style="width:16px;height:16px;background:gold;border-radius:50%;margin:-2px auto 0"></div></div>`;
                 mContainer.appendChild(d);
             });
 
@@ -446,10 +491,8 @@
             aContainer.innerHTML = '';
             ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
                 const d = document.createElement('div');
-                d.className = 'arc-mini';
-                d.style.padding = '1px 5px'; d.style.fontSize = '6px';
-                d.style.background = '#232d4b'; d.style.color = 'gold'; d.style.border = '0.5px solid gold';
-                d.style.borderRadius = '3px'; d.innerText = a.name;
+                d.style = "padding:1px 5px; font-size:6px; background:#232d4b; color:gold; border:0.5px solid gold; border-radius:3px; margin-bottom:1px;";
+                d.innerText = a.name;
                 aContainer.appendChild(d);
             });
         }
