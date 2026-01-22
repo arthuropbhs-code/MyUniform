@@ -72,18 +72,20 @@
         }
 
         /* POSITION ENGINES */
-        .ribbon-rack-container { 
-            position: absolute; 
-            top: 30.5%; 
-            left: 69.5%;  
-            transform: translateX(-50%);
-            display: flex; 
-            flex-direction: column;
-            gap: 1.5px; 
-            align-items: center; 
-            z-index: 20;
-            pointer-events: none;
-        }
+  .ribbon-rack-container { 
+    position: absolute; 
+    /* This 'top' coordinate now acts as the ANCHOR for the bottom row */
+    top: 21%; 
+    left: 69.5%;  
+    /* translateY(-100%) pushes the container up so its bottom sits on the 'top' line */
+    transform: translateX(-50%) translateY(-100%); 
+    display: flex; 
+    flex-direction: column-reverse; /* Stacks new rows on top of old ones */
+    gap: 1.5px; 
+    align-items: center; 
+    z-index: 20;
+    pointer-events: none;
+}
 
         .medals-container {
             position: absolute;
@@ -113,14 +115,14 @@
         /* MOBILE SCALING */
         @media (max-width: 768px) {
             .mannequin-container { width: 380px; height: 520px; }
-            .ribbon-rack-container { top: 33.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
+            .ribbon-rack-container { top: 21.5%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
             .medals-container { top: 35.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
             .arcs-container { top: 35.8%; left: 30.8%; transform: translateX(-50%) scale(0.9); }
         }
 
         @media (max-width: 480px) {
             .mannequin-container { width: 320px; height: 440px; }
-            .ribbon-rack-container { top: 34%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
+            .ribbon-rack-container { top: 22%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
             .medals-container { top: 36%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
             .arcs-container { top: 36%; left: 30%; transform: translateX(-50%) scale(0.85); }
         }
@@ -480,35 +482,28 @@ function updatePreview() {
         rows.push(sortedActive.slice(i, i + 3));
     }
 
-    // 4. Render to DOM
-    container.innerHTML = '';
+// FIND THIS SECTION IN update_preview.js AND EDIT:
 
-    // We simply append rows. Since we want them to stack, and the container 
-    // should naturally flow, we just append them. 
-    // If your CSS uses flex-col-reverse, you would reverse this list.
-    // Based on standard layouts, we'll append them in order.
-    rows.forEach(rowItems => {
-        const rowDiv = document.createElement('div');
-        // justify-center keeps ribbons centered if the top row has < 3
-        rowDiv.className = "flex gap-[1.5px] justify-center";
-        
-        rowItems.forEach(r => {
-            const d = document.createElement('div');
-            d.className = 'ribbon-mini';
-            d.style.backgroundImage = `url(${r.img})`;
-            
-            const count = state.ribbons.get(r.id);
-            if (count > 1) {
-                const s = document.createElement('div');
-                s.className = 'mini-star';
-                s.innerText = '★'.repeat(count - 1);
-                d.appendChild(s);
-            }
-            rowDiv.appendChild(d);
-        });
-        
-        container.appendChild(rowDiv);
+// 4. Render to DOM
+container.innerHTML = '';
+
+// .reverse() ensures the bottom row (the last ones in precedence) 
+// is the first element added to the column-reverse flexbox.
+rows.reverse().forEach(rowItems => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = "flex gap-[1.5px] justify-center";
+    
+    rowItems.forEach(r => {
+        // ... (keep the rest of your ribbon rendering logic the same)
+        const d = document.createElement('div');
+        d.className = 'ribbon-mini';
+        d.style.backgroundImage = `url(${r.img})`;
+        // ... 
+        rowDiv.appendChild(d);
     });
+    
+    container.appendChild(rowDiv);
+});
 
     // --- Medals & Arcs logic ---
     if (mContainer) {
