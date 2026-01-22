@@ -462,7 +462,7 @@ function updatePreview() {
         return;
     }
 
-    // 2. Determine how many ribbons go in the top row vs full rows
+ // 2. Determine how many ribbons go in the top row vs full rows
     // To keep the bottom row full, we identify the remainder first
     const total = sortedActive.length;
     const remainder = total % 3;
@@ -516,6 +516,27 @@ function updatePreview() {
         
         container.appendChild(rowDiv);
     });
+
+    // --- Medals & Arcs logic ---
+    if (mContainer) {
+        mContainer.innerHTML = '';
+        MEDALS.filter(m => state.medals.has(m.id)).forEach(m => {
+            const d = document.createElement('div');
+            d.className = 'medal-mini h-8 w-5 bg-yellow-600 border border-black';
+            mContainer.appendChild(d);
+        });
+    }
+
+    if (aContainer) {
+        aContainer.innerHTML = '';
+        ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
+            const d = document.createElement('div');
+            d.className = 'arc-mini px-2 py-0.5 text-[8px] bg-slate-800 border border-yellow-500 rounded-sm';
+            d.innerText = a.name;
+            aContainer.appendChild(d);
+        });
+    }
+}
 
     // --- Medals & Arcs logic ---
     if (mContainer) {
