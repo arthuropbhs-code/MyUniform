@@ -1,460 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MyUniform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Public+Sans:wght@300;400;700;900&display=swap');
-        
-        :root {
-            /* Broward District Blue & Army Gold Palette */
-            --broward-blue: #2563eb; 
-            --army-gold: #c5a059;
-            --military-slate: #0f172a;
-        }
-
-        body { 
-            font-family: 'Public Sans', sans-serif; 
-            background-color: #f8fafc; 
-            overflow-x: hidden; 
-            scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* TACTICAL GRADIENT BACKGROUND */
-        .military-bg {
-            background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #0f172a 100%);
-            position: relative;
-        }
-
-        .military-bg::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-
-        /* NAVBAR STYLING */
-        .nav-link {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.2s;
-            padding: 8px 16px;
-            border-radius: 8px;
-        }
-        .nav-link:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.05);
-        }
-
-        /* MANNEQUIN BASE SETUP */
-        .mannequin-container { 
-            position: relative; 
-            width: 480px; 
-            height: 620px; 
-            display: flex; 
-            justify-content: center; 
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .mannequin-img {
-            height: 100%;
-            width: auto;
-            object-fit: contain;
-            z-index: 10;
-            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
-        }
-
-        /* POSITION ENGINES */
-        .ribbon-rack-container { 
-            position: absolute; 
-            top: 30.5%; 
-            left: 69.5%;  
-            transform: translateX(-50%);
-            display: flex; 
-            flex-direction: column;
-            gap: 1.5px; 
-            align-items: center; 
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .medals-container {
-            position: absolute;
-            top: 35.5%;
-            left: 69.5%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 120px;
-            gap: 2px;
-            z-index: 20;
-        }
-
-        .arcs-container {
-            position: absolute;
-            top: 35.5%;
-            left: 30.5%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            align-items: center;
-            z-index: 20;
-        }
-
-        /* MOBILE SCALING */
-        @media (max-width: 768px) {
-            .mannequin-container { width: 380px; height: 520px; }
-            .ribbon-rack-container { top: 33.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
-            .medals-container { top: 35.8%; left: 69.8%; transform: translateX(-50%) scale(0.9); }
-            .arcs-container { top: 35.8%; left: 30.8%; transform: translateX(-50%) scale(0.9); }
-        }
-
-        @media (max-width: 480px) {
-            .mannequin-container { width: 320px; height: 440px; }
-            .ribbon-rack-container { top: 34%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
-            .medals-container { top: 36%; left: 70.2%; transform: translateX(-50%) scale(0.85); }
-            .arcs-container { top: 36%; left: 30%; transform: translateX(-50%) scale(0.85); }
-        }
-
-        /* RIBBON GRAPHICS */
-        .ribbon-mini {
-            width: 35px; height: 10px;
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            border: 0.4px solid rgba(0,0,0,0.9);
-            position: relative;
-            box-shadow: 0 0.5px 1px rgba(0,0,0,0.3);
-        }
-
-        .mini-star {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 7px; color: #ffd700;
-            text-shadow: 0.5px 0.5px 1px black;
-            width: 100%; text-align: center;
-            letter-spacing: -1px;
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn-tap:active { transform: scale(0.97); }
-    </style>
-</head>
-<body class="antialiased">
-
-    <!-- LANDING PAGE -->
-    <div id="landing-page" class="military-bg fixed inset-0 z-50 flex flex-col items-center justify-between p-6 text-white transition-all duration-700">
-        
-        <!-- NAV BAR -->
-        <nav class="w-full max-w-5xl flex items-center justify-between py-4 fade-in-up">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-black text-xs shadow-lg shadow-blue-500/20">B</div>
-                <span class="font-black tracking-tight text-sm">BCPS <span class="text-blue-400">JROTC</span></span>
-            </div>
-            <div class="hidden md:flex items-center gap-2">
-                <a href="#" class="nav-link">Battalions</a>
-                <a href="#" class="nav-link">CCR 145-2</a>
-                <a href="#" class="nav-link">Cadet Portal</a>
-                <a href="#" class="nav-link">Support</a>
-            </div>
-            <div class="w-8 md:hidden"></div>
-        </nav>
-
-        <!-- CENTER HERO -->
-        <div class="flex flex-col items-center text-center max-w-xl">
-            <div class="fade-in-up" style="animation-delay: 0.1s">
-                <h1 class="text-6xl font-black tracking-tighter mb-4">
-                    Broward <span class="text-blue-400">Uniform</span>
-                </h1>
-                <p class="text-blue-200/50 uppercase tracking-[0.4em] font-bold text-[10px] mb-12 italic">Professional Inspection Preparation</p>
-            </div>
-            
-            <div onclick="enterApp()" class="btn-tap fade-in-up group relative p-6 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 hover:border-blue-500/50 hover:bg-white/10 cursor-pointer transition-all w-full max-w-xs text-center shadow-2xl" style="animation-delay: 0.2s">
-                <h3 class="font-bold text-lg relative">Pompano Beach HS</h3>
-                <p class="text-blue-400 text-[10px] font-black uppercase tracking-widest mt-1 relative">Enter Battalion Builder</p>
-                <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</div>
-            </div>
-        </div>
-
-        <!-- FOOTER / DISCLAIMER -->
-        <footer class="w-full max-w-3xl text-center pb-8 opacity-40 fade-in-up" style="animation-delay: 0.4s">
-            <div class="h-px bg-white/20 w-16 mx-auto mb-6"></div>
-            <p class="text-[10px] uppercase tracking-widest font-bold mb-2">© 2026 MyUniform</p>
-            <p class="text-[9px] leading-relaxed">This tool is for visual representation only. Always refer to official JROTC CCR 145-2 regulations for final ribbon placement and inspection standards. Not affiliated with the Department of the Army, Broward County Public Schools, or Pompano Beach High School. This website was created by a cadet, for cadets. </p>
-        </footer>
-    </div>
-
-    <!-- MAIN APP CONTENT -->
-    <div id="builder-content" class="hidden opacity-0 transition-all duration-700 min-h-screen pb-12">
-        <header class="p-4 px-6 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-xl z-40 border-b border-slate-200">
-            <button onclick="exitApp()" class="btn-tap bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl font-bold text-[11px] uppercase tracking-tight transition-all">Back to District</button>
-            <div class="text-center">
-                <h2 class="text-sm font-black leading-tight">Pompano Beach HS</h2>
-                <p class="text-blue-600 font-black text-[9px] uppercase tracking-widest">Tornado Battalion</p>
-            </div>
-            <button onclick="resetAll()" class="btn-tap px-4 py-2 text-red-500 hover:bg-red-50 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all text-right">Reset Rack</button>
-        </header>
-
-        <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <!-- LEFT: VISUALIZER -->
-            <div class="flex flex-col items-center lg:sticky lg:top-24">
-                <div class="bg-slate-900 w-full rounded-[3rem] p-6 shadow-2xl flex items-center justify-center overflow-hidden border-[6px] border-slate-800 relative">
-                    <div class="mannequin-container" id="mannequin">
-                        <img src="assets/Male_Class_A.png" class="mannequin-img" alt="Uniform" onerror="this.src='https://placehold.co/480x620/0f172a/3b82f6?text=Class+A+Uniform'">
-                        <div id="u-ribbons" class="ribbon-rack-container"></div>
-                        <div id="u-medals" class="medals-container"></div>
-                        <div id="u-arcs" class="arcs-container"></div>
-                    </div>
-                    <!-- District Overlay -->
-                    <div class="absolute top-6 left-6 opacity-20 pointer-events-none">
-                        <div class="text-[10px] font-black text-white uppercase tracking-tighter">BCPS JROTC</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT: CONTROLS -->
-            <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-slate-100 h-[700px] flex flex-col">
-                <div class="flex p-1.5 bg-slate-100/80 rounded-2xl mb-6">
-                    <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-blue-600 shadow-sm transition-all">Ribbons</button>
-                    <button id="btn-medals" onclick="setTab('medals')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Medals</button>
-                    <button id="btn-arcs" onclick="setTab('arcs')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Arcs</button>
-                </div>
-                
-                <div class="relative mb-4">
-                    <input type="text" id="globalSearch" onkeyup="renderSelections()" placeholder="Search awards..." class="w-full p-3 pl-5 rounded-xl border border-slate-200 bg-slate-50 text-xs outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all">
-                </div>
-                
-                <div id="selection-list" class="space-y-2 overflow-y-auto pr-2 flex-1 scroll-smooth"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const OFFICIAL_RIBBONS = [
-            { id: 'hero', name: 'Medal for Heroism', precedence: 1, img: 'assets/army_jrotc_medal_for_heroism_ribbon.png' },
-            { id: 'sup-c', name: 'Superior Cadet Award', precedence: 2, img: 'assets/army_jrotc_superior_cadet_ribbon.png' },
-            { id: 'n11', name: 'Distinguished Cadet Award N-1-1', precedence: 3, img: 'assets/army_jrotc_distinguished_cadet_ribbon.png' },
-            { id: 'n12', name: 'Academic Excellence Award N-1-2', precedence: 4, img: 'assets/army_jrotc_academic_excellence_ribbon.png' },
-            { id: 'n13', name: 'Academic Achievement Award N-1-3', precedence: 5, img: 'assets/army_jrotc_academic_achievement_ribbon.png' },
-            { id: 'n14', name: 'Perfect Attendance Award N-1-4', precedence: 6, img: 'assets/army_jrotc_perfect_attendance_ribbon.png' },
-            { id: 'n15', name: 'Student Governement Award N-1-5', precedence: 7, img: 'assets/army_jrotc_student_government_ribbon.png' },
-            { id: 'n16', name: 'Leadership Education & Training N-1-6', precedence: 8, img: 'assets/army_jrotc_leadership_education_training_service_ribbon.png' },
-            { id: 'n17', name: 'Superior Instructor N-1-7 Ribbon', precedence: 9, img: 'assets/army_jrotc_n_1_7_ribbon.png' },
-            { id: 'n18', name: 'CPR First Aid N-1-8 Ribbon', precedence: 10, img: 'assets/army_jrotc_n_1_8_ribbon.png' },
-            { id: 'n19', name: 'Distinguished Cadet N-1-9 Ribbon', precedence: 11, img: 'assets/army_jrotc_n_1_9_ribbon.png' },
-            { id: 'n110', name: 'Honor Cadet N-1-10 Ribbon', precedence: 12, img: 'assets/army_jrotc_n_1_10_ribbon.png' },
-            { id: 'n31', name: 'Dai/Sai Instructor Leadership N-3-1 Ribbon', precedence: 13, img: 'assets/army_jrotc_dai_sai_instructor_leadership_ribbon.png' },
-            { id: 'n32', name: 'Personal Appearance N-3-2 Ribbon', precedence: 14, img: 'assets/army_jrotc_personal_appearance_ribbon.png' },
-            { id: 'n33', name: 'Profiency N-3-3 Ribbon', precedence: 15, img: 'assets/army_jrotc_proficiency_ribbon.png' },
-            { id: 'n34', name: 'Drill Team N-3-4 Ribbon', precedence: 16, img: 'assets/army_jrotc_drill_team_ribbon.png' },
-            { id: 'n35', name: 'Orienteering N-3-5 Ribbon', precedence: 17, img: 'assets/army_jrotc_orienteering_ribbon.png' },
-            { id: 'n36', name: 'Color | Honor Guard N-3-6 Ribbon', precedence: 18, img: 'assets/army_jrotc_color_guard_ribbon.png' },
-            { id: 'n37', name: 'Rifle | Marksmanship Team N-3-7 Ribbon', precedence: 19, img: 'assets/army_jrotc_rifle_team_ribbon.png' },
-            { id: 'n38', name: 'Adventure Training Team N-3-8 Ribbon', precedence: 20, img: 'assets/army_jrotc_adventure_training_ribbon.png' },
-            { id: 'n39', name: 'Commendation N-3-9 Ribbon', precedence: 21, img: 'assets/army_jrotc_commendation_ribbon.png' },
-            { id: 'n310', name: 'Good Conduct N-3-10 Ribbon', precedence: 22, img: 'assets/army_jrotc_good_conduct_ribbon.png' },
-            { id: 'n311', name: 'JCLC Participation N-3-11 Ribbon', precedence: 23, img: 'assets/army_jrotc_jclc_participation_ribbon.png' },
-            { id: 'n312', name: 'Championship Drill Team N-3-12 Ribbon', precedence: 24, img: 'assets/army_jrotc_n_3_12_ribbon.png' },
-            { id: 'n313', name: 'Raider Team N-3-13 Ribbon', precedence: 25, img: 'assets/army_jrotc_n_3_13_ribbon.png' },
-            { id: 'n314', name: 'Recondo / Rappelling N-3-14 Ribbon', precedence: 26, img: 'assets/army_jrotc_n_3_14_ribbon.png' },
-            { id: 'n315', name: 'Meritorious Actions N-3-15 Ribbon', precedence: 27, img: 'assets/army_jrotc_n_3_15_ribbon.png' },
-            { id: 'n21', name: 'Varsity Athletics Ribbon N-2-1', precedence: 28, img: 'assets/army_jrotc_varsity_athletics_ribbon.png' },
-            { id: 'n22', name: 'Physical Fitness N-2-2 Ribbon', precedence: 29, img: 'assets/army_jrotc_physical_fitness_ribbon.png' },
-            { id: 'n23', name: 'JROTC Athletics N-2-3 Ribbon', precedence: 30, img: 'assets/army_jrotc_athletics_ribbon.png' },
-            { id: 'n24', name: 'Junior Varsity Athletics N-2-4 Ribbon', precedence: 31, img: 'assets/army_jrotc_n_2_4_ribbon.png' },
-            { id: 'n25', name: 'Athletic Service N-2-5 Ribbon', precedence: 32, img: 'assets/army_jrotc_n_2_5_ribbon.png' },
-            { id: 'n41', name: 'Parade N-4-1 Ribbon', precedence: 33, img: 'assets/army_jrotc_parade_ribbon.png' },
-            { id: 'n42', name: 'Recruiting N-4-2 Ribbon', precedence: 34, img: 'assets/army_jrotc_recruiting_ribbon.png' },
-            { id: 'n43', name: 'School Support N-4-3 Ribbon', precedence: 35, img: 'assets/army_jrotc_n_4_3_ribbon.png' },
-            { id: 'n44', name: 'Community Service N-4-4 Ribbon', precedence: 36, img: 'assets/army_jrotc_n_4_4_ribbon.png' },
-            { id: 'n45', name: 'Confidence Course N-4-5 Ribbon', precedence: 37, img: 'assets/army_jrotc_n_4_5_ribbon.png' },
-            { id: 'n46', name: 'Service Learning N-4-6 Ribbon', precedence: 38, img: 'assets/army_jrotc_service_learning_ribbon.png' },
-            { id: 'n47', name: 'Excellent Staff Performance N-4-7 Ribbon', precedence: 39, img: 'assets/army_jrotc_excellent_staff_performance_ribbon.png' }
-        ];
-
-        const POMPANO_RIBBONS = [
-            { id: 'p1', name: 'Military Appreciation Ribbon', precedence: 200, img: 'assets/Military_Appreciation_Ribbon.png' },
-            { id: 'p2', name: 'Q1 Company Cadet of the Quarter', precedence: 201, img: 'assets/Q1_Cadet_of_Quarter_Ribbion.png' },
-            { id: 'p3', name: 'Q1 Company of the Quarter Ribbon', precedence: 202, img: 'assets/Q1_Company_Of_Quarter_Ribbon.png' },
-            { id: 'p4', name: 'Q2 Company Cadet of the Quarter', precedence: 203, img: 'assets/Q2_Cadet_Of_Quarter_Ribbon.png' },
-            { id: 'p5', name: 'Q3 Company Cadet of the Quarter', precedence: 204, img: 'assets/Q3_Cadet_Of_Quarter_Ribbion.png' },
-            { id: 'p6', name: 'Q4 Company Cadet of the Quarter', precedence: 205, img: 'assets/Q4_Cadet_Of_Quarter_Ribbion.png' },
-            { id: 'p7', name: 'Q4 Company of the Quarter Ribbon', precedence: 206, img: 'assets/Q4_Company_Of_Quarter.png' },
-            { id: 'p8', name: 'Funeral Ribbon', precedence: 207, img: 'assets/Funeral_Ribbon.png' },
-            { id: 'p9', name: 'Honor Company Ribbon', precedence: 208, img: 'assets/Honor_Company_Ribbon.png' },
-            { id: 'p10', name: 'Experience Camp Attendance Ribbon', precedence: 209, img: 'assets/EC_Attendence_Ribbon.png' },
-            { id: 'p11', name: 'Experience Camp Honor Cadet Ribbon', precedence: 210, img: 'assets/EC_Honor_Cadet_ribbion.png' },
-            { id: 'p12', name: 'Experience Camp Honor Company Ribbon', precedence: 211, img: 'assets/EC_Honor_Company_Ribbon.png' },
-            { id: 'p13', name: 'Company Flag Requirements Ribbon', precedence: 212, img: 'assets/Company_Req_Completion_Ribbon.png' },
-            { id: 'p14', name: 'Company Commander of the Quarter Ribbon', precedence: 213, img: 'assets/placeholder.png' },
-            { id: 'p15', name: 'Company XO of the Quarter Ribbon', precedence: 214, img: 'assets/placeholder.png' },
-            { id: 'p16', name: 'Company First Sergeant of the Quarter Ribbon', precedence: 215, img: 'assets/placeholder.png' },
-            { id: 'p17', name: 'Platoon Leader of the Quarter Ribbon', precedence: 216, img: 'assets/placeholder.png' },
-            { id: 'p18', name: 'Platoon Sergeant of the Quarter Ribbon', precedence: 217, img: 'assets/placeholder.png' },
-            { id: 'p19', name: 'Squad Leader of the Quarter Ribbon', precedence: 218, img: 'assets/placeholder.png' },
-            { id: 'p20', name: 'Squad Member of the Quarter Ribbon', precedence: 219, img: 'assets/placeholder.png' },
-            { id: 'p21', name: 'Company Platoon Leader of the Quarter Ribbon', precedence: 220, img: 'assets/placeholder.png' },
-            { id: 'p22', name: 'Company Platoon Sergeant of the Quarter Ribbon', precedence: 221, img: 'assets/placeholder.png' },
-            { id: 'p23', name: 'Company Squad Leader of the Quarter Ribbon', precedence: 222, img: 'assets/placeholder.png' },
-            { id: 'p24', name: 'Company Squad Member of the Quarter Ribbon', precedence: 223, img: 'assets/placeholder.png' },
-            { id: 'p25', name: 'Experience Camp Cadet Cadre Ribbon', precedence: 224, img: 'assets/placeholder.png' },
-            { id: 'p26', name: 'JPA Ribbon', precedence: 225, img: 'assets/placeholder.png' },
-            { id: 'p27', name: 'DAI Award Ribbon', precedence: 226, img: 'assets/placeholder.png' },
-            { id: 'p28', name: 'Q2 Company of the Quarter Ribbon', precedence: 227, img: 'assets/placeholder.png' },
-            { id: 'p29', name: 'Q3 Company of the Quarter Ribbon', precedence: 228, img: 'assets/placeholder.png' },
-            { id: 'p30', name: '100 Flags Ribbon', precedence: 229, img: 'assets/placeholder.png' },
-            { id: 'p31', name: 'Highest Amount of Flags Ribbon', precedence: 230, img: 'assets/placeholder.png' }
-        ];
-
-        const MEDALS = [
-            { id: 'm-hero', name: 'Heroism Medal', color: '#8b0000' },
-            { id: 'm-sup', name: 'Superior Cadet Medal', color: '#1e3a8a' },
-            { id: 'm-acad', name: 'Academic Achievement', color: '#fbbf24' },
-            { id: 'm-cond', name: 'Good Conduct', color: '#16a34a' }
-        ];
-
-        const ARCS = [
-            { id: 'a-drill', name: 'Drill Team' },
-            { id: 'a-color', name: 'Color Guard' },
-            { id: 'a-raider', name: 'Raider' },
-            { id: 'a-rifle', name: 'Rifle Team' },
-            { id: 'a-challenge', name: 'Cadet Challenge' },
-            { id: 'a-jlab', name: 'JLAB' }
-        ];
-
-        let state = { ribbons: new Map(), medals: new Set(), arcs: new Set(), tab: 'ribbons' };
-function enterApp() {
-    const landing = document.getElementById('landing-page');
-    const builder = document.getElementById('builder-content');
-    
-    if (landing && builder) {
-        // Hide landing page
-        landing.classList.add('hidden');
-        
-        // Show builder content
-        builder.classList.remove('hidden');
-        
-        // Trigger the fade-in effect
-        setTimeout(() => {
-            builder.classList.remove('opacity-0');
-            builder.classList.add('opacity-100');
-        }, 10);
-
-        // Initialize the preview
-        renderSelections();
-        updatePreview();
-    } else {
-        console.error("Could not find the page elements. check your IDs!");
-    }
-}
-        function exitApp() { 
-            const bc = document.getElementById('builder-content');
-            bc.classList.remove('opacity-100');
-            bc.classList.add('opacity-0');
-            setTimeout(() => location.reload(), 500);
-        }
-
-        function setTab(tab) {
-            state.tab = tab;
-            ['ribbons', 'medals', 'arcs'].forEach(t => {
-                const btn = document.getElementById(`btn-${t}`);
-                btn.className = (t === tab) 
-                    ? "flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-blue-600 shadow-sm"
-                    : "flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400";
-            });
-            renderSelections();
-        }
-
-        function updateRibbon(id, d) {
-            let count = (state.ribbons.get(id) || 0) + d;
-            if (count <= 0) state.ribbons.delete(id); 
-            else state.ribbons.set(id, Math.min(count, 5));
-            updatePreview(); renderSelections(true);
-        }
-
-        function toggleItem(type, id) {
-            state[type].has(id) ? state[type].delete(id) : state[type].add(id);
-            updatePreview(); renderSelections(true);
-        }
-
-        function renderSelections(skipAnim = false) {
-            const list = document.getElementById('selection-list');
-            const searchInput = document.getElementById('globalSearch');
-            const search = searchInput ? searchInput.value.toLowerCase() : "";
-            list.innerHTML = '';
-            
-            if (state.tab === 'ribbons') {
-                const available = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
-                    .filter(r => r.name.toLowerCase().includes(search));
-                
-                available.forEach((r, i) => {
-                    const count = state.ribbons.get(r.id) || 0;
-                    const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border transition-all ${count > 0 ? 'border-blue-500 bg-blue-50' : 'bg-white border-slate-100'}`;
-                    div.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-3 border border-slate-200 bg-white">
-                                <img src="${r.img}" class="w-full h-full object-fill" onerror="this.style.opacity='0'">
-                            </div>
-                            <span class="text-[10px] font-bold text-slate-700">${r.name}</span>
-                        </div>
-                        <div class="flex items-center bg-white rounded-lg border border-slate-200 p-1">
-                            <button onclick="updateRibbon('${r.id}', -1)" class="w-6 h-6 text-xs font-bold text-slate-400">-</button>
-                            <span class="w-4 text-center text-[10px] font-black text-blue-600">${count}</span>
-                            <button onclick="updateRibbon('${r.id}', 1)" class="w-6 h-6 text-xs text-blue-600 font-bold">+</button>
-                        </div>`;
-                    list.appendChild(div);
-                });
-            } else if (state.tab === 'medals') {
-                MEDALS.filter(m => m.name.toLowerCase().includes(search)).forEach(m => {
-                    const active = state.medals.has(m.id);
-                    const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-blue-500 bg-blue-50' : 'bg-white'}`;
-                    div.onclick = () => toggleItem('medals', m.id);
-                    div.innerHTML = `<span class="text-[10px] font-bold">${m.name}</span><span class="text-blue-600 font-black">${active ? '✓' : '+'}</span>`;
-                    list.appendChild(div);
-                });
-            } else {
-                ARCS.filter(a => a.name.toLowerCase().includes(search)).forEach(a => {
-                    const active = state.arcs.has(a.id);
-                    const div = document.createElement('div');
-                    div.className = `flex items-center justify-between p-3 rounded-xl border cursor-pointer ${active ? 'border-blue-500 bg-blue-50' : 'bg-white'}`;
-                    div.onclick = () => toggleItem('arcs', a.id);
-                    div.innerHTML = `<span class="text-[10px] font-bold">${a.name} Arc</span><span class="text-blue-600 font-black">${active ? '✓' : '+'}</span>`;
-                    list.appendChild(div);
-                });
-            }
-        }
-
 function updatePreview() {
     const container = document.getElementById('u-ribbons');
     const mContainer = document.getElementById('u-medals');
     const aContainer = document.getElementById('u-arcs');
-    
+
     if (!container) return;
 
-    // 1. Sort by precedence (Highest rank = lowest number)
     const sortedActive = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
         .filter(r => state.ribbons.has(r.id))
         .sort((a, b) => a.precedence - b.precedence);
 
-    // If empty, show placeholder and clear others
     if (sortedActive.length === 0) {
         container.innerHTML = '<div class="text-slate-600 text-xs italic">No ribbons added</div>';
         if (mContainer) mContainer.innerHTML = '';
@@ -462,48 +16,28 @@ function updatePreview() {
         return;
     }
 
- // 2. Determine how many ribbons go in the top row vs full rows
-    // To keep the bottom row full, we identify the remainder first
-    const total = sortedActive.length;
-    const remainder = total % 3;
-    const topRowCount = remainder === 0 ? 3 : remainder;
-
-    // 3. Clear and Set up the container
-    container.innerHTML = '';
-
-    // 4. Build the rows
-    // We work through the sorted list. The first group is the top row (can be 1, 2, or 3)
-    // All subsequent groups will be full rows of 3.
-    let currentIndex = 0;
+    // Build rows bottom-up
     const rows = [];
+    let index = sortedActive.length;
 
-    // Create the top row (Highest priority ribbons)
-    const topRowItems = sortedActive.slice(0, topRowCount);
-    rows.push(topRowItems);
-    currentIndex = topRowCount;
-
-    // Create subsequent full rows of 3 (Lower priority ribbons)
-    while (currentIndex < total) {
-        rows.push(sortedActive.slice(currentIndex, currentIndex + 3));
-        currentIndex += 3;
+    while (index > 0) {
+        const start = Math.max(index - 3, 0);
+        rows.push(sortedActive.slice(start, index));
+        index = start;
     }
 
-    // 5. Render rows to the DOM
-    // Because we want the bottom row to be the "anchor", we reverse the rows array
-    // and use flex-direction: column-reverse in CSS, OR just append them.
-    // Given the requirement to grow UP from the pocket:
-    const renderList = [...rows].reverse(); 
+    container.innerHTML = '';
 
-    renderList.forEach(rowItems => {
+    // Render bottom row first so rack grows upward
+    rows.forEach(rowItems => {
         const rowDiv = document.createElement('div');
-        // justify-center keeps them centered above the pocket
         rowDiv.className = "flex gap-[1.5px] justify-center";
-        
+
         rowItems.forEach(r => {
             const d = document.createElement('div');
             d.className = 'ribbon-mini';
             d.style.backgroundImage = `url(${r.img})`;
-            
+
             const count = state.ribbons.get(r.id);
             if (count > 1) {
                 const s = document.createElement('div');
@@ -511,23 +45,31 @@ function updatePreview() {
                 s.innerText = '★'.repeat(count - 1);
                 d.appendChild(s);
             }
+
             rowDiv.appendChild(d);
         });
-        
+
         container.appendChild(rowDiv);
     });
 
+    // Medals
+    if (mContainer) {
+        mContainer.innerHTML = '';
+        MEDALS.filter(m => state.medals.has(m.id)).forEach(() => {
+            const d = document.createElement('div');
+            d.className = 'medal-mini h-8 w-5 bg-yellow-600 border border-black';
+            mContainer.appendChild(d);
+        });
+    }
 
-
-
-
-        function resetAll() {
-            state.ribbons.clear();
-            state.medals.clear();
-            state.arcs.clear();
-            updatePreview();
-            renderSelections();
-        }
-    </script>
-</body>
-</html>
+    // Arcs
+    if (aContainer) {
+        aContainer.innerHTML = '';
+        ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
+            const d = document.createElement('div');
+            d.className = 'arc-mini px-2 py-0.5 text-[8px] bg-slate-800 border border-yellow-500 rounded-sm';
+            d.innerText = a.name;
+            aContainer.appendChild(d);
+        });
+    }
+}
