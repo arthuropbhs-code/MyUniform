@@ -230,12 +230,18 @@
                 </div>
             </div>
 
-            <!-- RIGHT: CONTROLS -->
-            <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-slate-100 h-[700px] flex flex-col">
-                <div class="flex p-1.5 bg-slate-100/80 rounded-2xl mb-6">
-                    <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-blue-600 shadow-sm transition-all">Ribbons</button>
-                    <button id="btn-medals" onclick="setTab('medals')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Medals</button>
-                    <button id="btn-arcs" onclick="setTab('arcs')" class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 transition-all">Arcs</button>
+        <!-- RIGHT: CONTROLS -->
+<div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-slate-100 h-[700px] flex flex-col">
+    <div class="flex p-1.5 bg-slate-100/80 rounded-2xl mb-6">
+        <!-- Ribbons: Remains active -->
+        <button id="btn-ribbons" onclick="setTab('ribbons')" class="flex-1 py-2.5 rounded-xl font-bold text-xs bg-white text-blue-600 shadow-sm transition-all">Ribbons</button>
+        
+        <!-- Medals: Disabled with "Coming Soon" styling -->
+        <button id="btn-medals" disabled class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 opacity-50 cursor-not-allowed transition-all">Medals (Soon)</button>
+        
+        <!-- Arcs: Disabled with "Coming Soon" styling -->
+        <button id="btn-arcs" disabled class="flex-1 py-2.5 rounded-xl font-bold text-xs text-slate-400 opacity-50 cursor-not-allowed transition-all">Arcs (Soon)</button>
+    </div>
                 </div>
                 
                 <div class="relative mb-4">
@@ -508,25 +514,9 @@ function updatePreview() {
         container.appendChild(rowDiv);
     });
 
-    // --- Medals & Arcs logic ---
-    if (mContainer) {
-        mContainer.innerHTML = '';
-        MEDALS.filter(m => state.medals.has(m.id)).forEach(m => {
-            const d = document.createElement('div');
-            d.className = 'medal-mini h-8 w-5 bg-yellow-600 border border-black';
-            mContainer.appendChild(d);
-        });
-    }
-
-    if (aContainer) {
-        aContainer.innerHTML = '';
-        ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
-            const d = document.createElement('div');
-            d.className = 'arc-mini px-2 py-0.5 text-[8px] bg-slate-800 border border-yellow-500 rounded-sm';
-            d.innerText = a.name;
-            aContainer.appendChild(d);
-        });
-    }
+    // --- Medals & Arcs are currently disabled to prevent usage ---
+    if (mContainer) mContainer.innerHTML = '';
+    if (aContainer) aContainer.innerHTML = '';
 }
 
 
