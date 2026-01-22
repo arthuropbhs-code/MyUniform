@@ -444,71 +444,73 @@ function enterApp() {
 
 function updatePreview() {
     const container = document.getElementById('u-ribbons');
-    if (!container) return;
-    container.innerHTML = '';
+    const mContainer = document.getElementById('u-medals');
+    const aContainer = document.getElementById('u-arcs');
     
-    // Get active ribbons sorted by precedence (lowest number = highest rank)
-    const active = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
+    if (!container) return;
+
+    // 1. Sort by precedence (Highest rank = lowest number)
+    const sortedActive = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
         .filter(r => state.ribbons.has(r.id))
         .sort((a, b) => a.precedence - b.precedence);
 
-    if (active.length === 0) {
-        // Clear other containers and return
-        const mC = document.getElementById('u-medals');
-        const aC = document.getElementById('u-arcs');
-        if (mC) mC.innerHTML = '';
-        if (aC) aC.innerHTML = '';
+    // If empty, show placeholder and clear others
+    if (sortedActive.length === 0) {
+        container.innerHTML = '<div class="text-slate-600 text-xs italic">No ribbons added</div>';
+        if (mContainer) mContainer.innerHTML = '';
+        if (aContainer) aContainer.innerHTML = '';
         return;
     }
 
-    // Process ribbons in rows of 3
-    for (let i = 0; i < active.length; i += 3) {
+    // 2. REVERSE the list so we build from the bottom up
+    // This ensures the bottom row is filled with the lowest-ranking ribbons first
+    const buildingList = [...sortedActive].reverse();
+
+    // 3. Clear and Set up the container
+    container.innerHTML = '';
+
+    // 4. Group into rows of 3
+    for (let i = 0; i < buildingList.length; i += 3) {
         const rowDiv = document.createElement('div');
-        rowDiv.className = "flex gap-[1.5px]";
+        // 'flex-row-reverse' paired with our reversed list puts the highest rank on the Top-Left
+        rowDiv.className = "flex flex-row-reverse gap-[1.5px] justify-center";
         
-        // Take 3 ribbons for the current row
-        active.slice(i, i + 3).forEach(r => {
+        const rowItems = buildingList.slice(i, i + 3);
+        
+        rowItems.forEach(r => {
             const d = document.createElement('div');
             d.className = 'ribbon-mini';
             d.style.backgroundImage = `url(${r.img})`;
             
-            const c = state.ribbons.get(r.id);
-            if (c > 1) {
+            const count = state.ribbons.get(r.id);
+            if (count > 1) {
                 const s = document.createElement('div');
                 s.className = 'mini-star';
-                s.innerText = '★'.repeat(c - 1);
+                s.innerText = '★'.repeat(count - 1);
                 d.appendChild(s);
             }
             rowDiv.appendChild(d);
         });
         
-        // Add the row to the rack
         container.appendChild(rowDiv);
     }
 
-    // Update Medals Visuals
-    const mContainer = document.getElementById('u-medals');
+    // --- Keep your Medals & Arcs logic below ---
     if (mContainer) {
         mContainer.innerHTML = '';
         MEDALS.filter(m => state.medals.has(m.id)).forEach(m => {
             const d = document.createElement('div');
-            d.className = 'medal-mini';
-            d.style.width = '18px'; d.style.height = '28px';
-            d.innerHTML = `<div style="height:12px;background:${m.color}"></div><div style="width:16px;height:16px;background:gold;border-radius:50%;margin:-2px auto 0"></div>`;
+            d.className = 'medal-mini h-8 w-5 bg-yellow-600 border border-black';
             mContainer.appendChild(d);
         });
     }
 
-    // Update Arcs Visuals
-    const aContainer = document.getElementById('u-arcs');
     if (aContainer) {
         aContainer.innerHTML = '';
         ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
             const d = document.createElement('div');
-            d.className = 'arc-mini';
-            d.style.padding = '1px 5px'; d.style.fontSize = '6px';
-            d.style.background = '#232d4b'; d.style.color = 'gold'; d.style.border = '0.5px solid gold';
-            d.style.borderRadius = '3px'; d.innerText = a.name;
+            d.className = 'arc-mini px-2 py-0.5 text-[8px] bg-slate-800 border border-yellow-500 rounded-sm';
+            d.innerText = a.name;
             aContainer.appendChild(d);
         });
     }
