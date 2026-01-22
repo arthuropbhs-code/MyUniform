@@ -437,43 +437,76 @@
             }
         }
 
-        function updatePreview() {
-            const container = document.getElementById('u-ribbons');
-            container.innerHTML = '';
+function updatePreview() {
+    const container = document.getElementById('u-ribbons');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    // Get active ribbons sorted by precedence (lowest number = highest rank)
+    const active = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
+        .filter(r => state.ribbons.has(r.id))
+        .sort((a, b) => a.precedence - b.precedence);
+
+    if (active.length === 0) {
+        // Clear other containers and return
+        const mC = document.getElementById('u-medals');
+        const aC = document.getElementById('u-arcs');
+        if (mC) mC.innerHTML = '';
+        if (aC) aC.innerHTML = '';
+        return;
+    }
+
+    // Process ribbons in rows of 3
+    for (let i = 0; i < active.length; i += 3) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = "flex gap-[1.5px]";
+        
+        // Take 3 ribbons for the current row
+        active.slice(i, i + 3).forEach(r => {
+            const d = document.createElement('div');
+            d.className = 'ribbon-mini';
+            d.style.backgroundImage = `url(${r.img})`;
             
-            // Get active ribbons sorted by precedence
-            const active = [...OFFICIAL_RIBBONS, ...POMPANO_RIBBONS]
-                .filter(r => state.ribbons.has(r.id))
-                .sort((a,b) => a.precedence - b.precedence);
-
-            if(active.length === 0) return;
-
-            // Loop through active ribbons 3 at a time
-            for(let i=0; i < active.length; i += 3) {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = "flex gap-[1.5px]";
-                
-                // Get up to 3 ribbons for this row
-                active.slice(i, i+3).forEach(r => {
-                    const d = document.createElement('div');
-                    d.className = 'ribbon-mini';
-                    d.style.backgroundImage = `url(${r.img})`;
-                    
-                    const c = state.ribbons.get(r.id);
-                    if(c > 1) {
-                        const s = document.createElement('div');
-                        s.className = 'mini-star';
-                        s.innerText = '★'.repeat(c-1);
-                        d.appendChild(s);
-                    }
-                    rowDiv.appendChild(d);
-                });
-                
-                // Because the container is flex-direction: column-reverse,
-                // appending row 1, then row 2, results in row 1 at the bottom.
-                container.appendChild(rowDiv);
+            const c = state.ribbons.get(r.id);
+            if (c > 1) {
+                const s = document.createElement('div');
+                s.className = 'mini-star';
+                s.innerText = '★'.repeat(c - 1);
+                d.appendChild(s);
             }
-        }  });
+            rowDiv.appendChild(d);
+        });
+        
+        // Add the row to the rack
+        container.appendChild(rowDiv);
+    }
+
+    // Update Medals Visuals
+    const mContainer = document.getElementById('u-medals');
+    if (mContainer) {
+        mContainer.innerHTML = '';
+        MEDALS.filter(m => state.medals.has(m.id)).forEach(m => {
+            const d = document.createElement('div');
+            d.className = 'medal-mini';
+            d.style.width = '18px'; d.style.height = '28px';
+            d.innerHTML = `<div style="height:12px;background:${m.color}"></div><div style="width:16px;height:16px;background:gold;border-radius:50%;margin:-2px auto 0"></div>`;
+            mContainer.appendChild(d);
+        });
+    }
+
+    // Update Arcs Visuals
+    const aContainer = document.getElementById('u-arcs');
+    if (aContainer) {
+        aContainer.innerHTML = '';
+        ARCS.filter(a => state.arcs.has(a.id)).forEach(a => {
+            const d = document.createElement('div');
+            d.className = 'arc-mini';
+            d.style.padding = '1px 5px'; d.style.fontSize = '6px';
+            d.style.background = '#232d4b'; d.style.color = 'gold'; d.style.border = '0.5px solid gold';
+            d.style.borderRadius = '3px'; d.innerText = a.name;
+            aContainer.appendChild(d);
+        });
+    }
 }
 
         
@@ -503,7 +536,18 @@
                 });
             }
         }
-
+        function launchApp() {
+            const landing = document.getElementById('landing-page');
+            const app = document.getElementById('app-container');
+            
+            if (landing && app) {
+                landing.classList.add('hidden');
+                app.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            } else {
+                console.error("Navigation elements not found. Check your HTML IDs.");
+            }
+        }
         function resetAll() {
             state.ribbons.clear();
             state.medals.clear();
